@@ -51,7 +51,7 @@ To use a specific branch of RAT:
 /home/root/bin/thisroot.sh
 /home/geant4.10.00.p02/bin/geant4.sh
 RAT_SCONS=/home/scons-2.1.0
-/home/rat/env.sh
+/rat/env.sh
 
 
 # This is where actual execution will get done when someone runs the container
