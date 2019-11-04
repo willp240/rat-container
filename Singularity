@@ -110,7 +110,7 @@ RAT_SCONS=/home/scons-2.1.0
     mkdir geant4.10.00.p02-build
     cd geant4.10.00.p02-build
     cmake -DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p02 ../geant4.10.00.p02
-    make
+    make -j4
     make install
     chmod +x /home/geant4.10.00.p02/bin/geant4.sh && source /home/geant4.10.00.p02/bin/geant4.sh
     chmod +x /home/geant4.10.00.p02/share/Geant4-10.0.2/geant4make/geant4make.sh
