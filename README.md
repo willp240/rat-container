@@ -48,6 +48,10 @@ Download the `Singularity` recipe file, and run the following command, which wil
 **To use a specific branch of RAT**:
 - Ensure you git checkout to the branch OUTSIDE the container to avoid issues, then run RAT like above
 
+**To see this help message on the command line**:
+
+`singularity help snoing.simg`
+
 # FAQ
 
 **I'm seeing an issue related to rat/env.sh**
