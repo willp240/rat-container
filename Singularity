@@ -8,6 +8,8 @@ Direct questions, comments or bugs to Jamie at
 
 To build RAT:
 - After building the container above, clone RAT from GitHub
+- Add execute permissions to the rat/env.sh script with this command:
+    chmod +x path/to/rat/env.sh
 - Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
     singularity run --app build-rat -B path/to/rat:/rat snoing.simg
 - RAT is now ready to use!
@@ -51,7 +53,7 @@ To use a specific branch of RAT:
     source /home/root/bin/thisroot.sh
     source /home/geant4.10.00.p02/bin/geant4.sh
     export RAT_SCONS=/home/scons-2.1.0
-    chmod +x /rat/env.sh && source /rat/env.sh
+    source /rat/env.sh
 
 
 # This is where actual execution will get done when someone runs the container
