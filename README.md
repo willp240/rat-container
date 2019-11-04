@@ -2,16 +2,20 @@
 A singularity recipe for building a SNO+ environment for RAT. 
 
 # To build the container
+To build, you must have root permissions and singularity installed on your machine (the image can be moved to a cluster once it has been built). Install singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu).
+
+Download the `Singularity` recipe file, and run the following command, which will produce a container file called `snoing.simg`:
+
 `sudo singularity build snoing.simg Singularity`
 
 # Instructions on how to use the container with RAT
 
 **To build RAT**:
-- Clone RAT from GitHub
-- Enter the following command, filling in the path to RAT:
+- After building the container above, clone RAT from GitHub
+- Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
 
 `singularity run --app build-rat -B path/to/rat:/rat snoing.simg`
-- RAT is now ready to use!
+- RAT is now ready to use! Look at the instructions below for how to run it
 
 **To exit the container**:
 
@@ -19,11 +23,13 @@ A singularity recipe for building a SNO+ environment for RAT.
 
 **To update RAT**:
 
+- Outside of the container, `cd` into your RAT repo, and run:
+
 `git fetch && git merge`
-- Then, follow the instructions above to rebuild RAT
+- Then, follow the build instructions above to (re)build RAT
 
 **To run RAT**:
-- Enter the following command, filling in the path to RAT:
+- Enter the following command, filling in the path to RAT with your own:
 
 `singularity shell -B path/to/rat:/rat snoing.simg`
 
