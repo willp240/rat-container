@@ -7,8 +7,8 @@ Direct questions, comments or bugs to Jamie at
 <jrajewski@ualberta.ca>
 
 To build RAT:
-- Clone RAT from GitHub
-- Enter the following command, filling in the path to RAT:
+- After building the container above, clone RAT from GitHub
+- Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
     singularity run --app build-rat -B path/to/rat:/rat snoing.simg
 - RAT is now ready to use!
 
@@ -17,12 +17,12 @@ To exit the container:
     exit
 
 To update RAT:
-- Run the following command:
+- Outside of the container, `cd` into your RAT repo, and run:
     git fetch && git merge
-- Then, follow the instructions above to rebuild RAT
+- Then, follow the instructions above to (re)build RAT
 
 To run RAT:
-- Enter the following command, filling in the path to RAT:
+- Enter the following command, filling in the path to RAT with your own:
     singularity shell -B path/to/rat:/rat snoing.simg
     * It is important to mount your rat dir to /rat as the build
     * scripts look there for it!
@@ -48,10 +48,10 @@ To use a specific branch of RAT:
 # This sources the following into the containers' environment
 # but ONLY during RUN, not BUILD
 %environment
-/home/root/bin/thisroot.sh
-/home/geant4.10.00.p02/bin/geant4.sh
-RAT_SCONS=/home/scons-2.1.0
-/rat/env.sh
+    source /home/root/bin/thisroot.sh
+    source /home/geant4.10.00.p02/bin/geant4.sh
+    export RAT_SCONS=/home/scons-2.1.0
+    chmod +x /rat/env.sh && source /rat/env.sh
 
 
 # This is where actual execution will get done when someone runs the container
@@ -66,6 +66,7 @@ RAT_SCONS=/home/scons-2.1.0
 #   - Find some way to echo a message indicating if rat dir not mounted
 #     correctly as echo wont work?
 %apprun build-rat
+
     # Ensure that a directory has been mounted so that rat can be cloned
     if [ -d /rat ];
     then
@@ -73,7 +74,6 @@ RAT_SCONS=/home/scons-2.1.0
         # loaded from outside the container, it should already have exec permissions
         cd /rat
         ./configure
-        source /rat/env.sh
         scons
     fi
 
@@ -110,7 +110,7 @@ RAT_SCONS=/home/scons-2.1.0
     mkdir geant4.10.00.p02-build
     cd geant4.10.00.p02-build
     cmake -DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p02 ../geant4.10.00.p02
-    make
+    make -j4
     make install
     chmod +x /home/geant4.10.00.p02/bin/geant4.sh && source /home/geant4.10.00.p02/bin/geant4.sh
     chmod +x /home/geant4.10.00.p02/share/Geant4-10.0.2/geant4make/geant4make.sh
