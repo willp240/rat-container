@@ -54,5 +54,5 @@ Download the `Singularity` recipe file, and run the following command, which wil
 
 # FAQ
 
-**I'm seeing an issue related to rat/env.sh**
+**I'm seeing an issue related to rat/env.sh or "/scif/apps/build-rat/scif/runscript: line 9: scons: command not found"**
 - Ensure that you have added execute permissions to this file so that singularity can access and execute it (since it is outside the container)
