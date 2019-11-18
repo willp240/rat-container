@@ -77,6 +77,9 @@ To use a specific branch of RAT:
 	# Add execute permissions to the newly created env.sh
 	/bin/bash -c 'chmod +x /rat/env.sh'
 	
+	# Now source it to make scons available
+	source /rat/env.sh
+	
         scons
     fi
 
