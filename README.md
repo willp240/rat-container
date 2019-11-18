@@ -15,9 +15,6 @@ Download the `Singularity` recipe file, and run the following command, which wil
 - Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
 
 `singularity run --app build-rat -B path/to/rat:/rat snoing.simg`
-- Add execute permissions to the rat/env.sh script with this command:
-
-`chmod +x path/to/rat/env.sh`
 - RAT is now ready to use! Look at the instructions below for how to run it
 
 **To exit the container**:
@@ -51,8 +48,3 @@ Download the `Singularity` recipe file, and run the following command, which wil
 **To see this help message on the command line**:
 
 `singularity help snoing.simg`
-
-# FAQ
-
-**I'm seeing an issue related to rat/env.sh or "/scif/apps/build-rat/scif/runscript: line 9: scons: command not found"**
-- Ensure that you have added execute permissions to this file so that singularity can access and execute it (since it is outside the container)
