@@ -1,6 +1,13 @@
 # snoing-2.0
 A singularity recipe for building a SNO+ environment for RAT. 
 
+# To download the pre-built container
+On your local machine, enter the command:
+
+`singularity pull --name snoing.simg shub://jamierajewski/snoing-2.0`
+
+I suggest this be done on your local machine due to the firewall on clusters not allowing Singularity Hub downloads through.
+
 # To build the container
 To build, you must have root permissions and singularity installed on your machine (the image can be moved to a cluster once it has been built). Install singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu).
 
@@ -48,3 +55,8 @@ Download the `Singularity` recipe file, and run the following command, which wil
 **To see this help message on the command line**:
 
 `singularity help snoing.simg`
+
+**F.A.Q.**
+
+I'm seeing "Error getting image manifest using url..." when I try to pull the container
+- This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, and transfer the image to your cluster with scp.
