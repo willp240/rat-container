@@ -11,13 +11,13 @@ Download the `Singularity` recipe file, and run the following command, which wil
 # Instructions on how to use the container with RAT
 
 **To build RAT**:
-- After building the container above, clone RAT from GitHub
-- Add execute permissions to the rat/env.sh script with this command:
-
-`chmod +x path/to/rat/env.sh`
+- After building the container above or acquiring it from SingularityHub, clone RAT from GitHub
 - Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
 
 `singularity run --app build-rat -B path/to/rat:/rat snoing.simg`
+- Add execute permissions to the rat/env.sh script with this command:
+
+`chmod +x path/to/rat/env.sh`
 - RAT is now ready to use! Look at the instructions below for how to run it
 
 **To exit the container**:
