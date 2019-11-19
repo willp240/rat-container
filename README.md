@@ -1,5 +1,8 @@
 # snoing-2.0
 A singularity recipe for building a SNO+ environment for RAT. 
+To use the container, either download or build it according to the instructions below after installing Singularity.
+
+Instructions to install Singularity itself can be found [here.](https://sylabs.io/guides/3.0/user-guide/installation.html)
 
 # To download the pre-built container
 On your local machine, enter the command:
