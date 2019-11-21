@@ -34,26 +34,29 @@ I suggest this be done on your local machine due to the firewall on clusters not
 
 `exit`
 
+**To run RAT**:
+- Enter the following command, filling in the path to RAT with your own:
+
+`singularity shell -B path/to/rat:/rat snoing.simg`
+- It is **important** to **mount your rat directory to /rat** as the build scripts look there for it!
+- RAT is primed, now you can navigate to /rat to run things in the repository. To use other directories as well, see below.
+
 **To update RAT**:
 
 - Outside of the container, `cd` into your RAT repo, and run:
 
 `git fetch && git merge`
-- Then, go inside the container and run:
-
-`scons`
-
-**To run RAT**:
-- Enter the following command, filling in the path to RAT with your own:
+- Then, run the container:
 
 `singularity shell -B path/to/rat:/rat snoing.simg`
+- Finally, run scons to rebuild RAT:
 
-- It is important to mount your rat dir to /rat as the build scripts look there for it!
-- RAT is primed, now you can navigate to /rat to run things in the repository. To use other directories as well, see below.
+`scons`
 
 **To write/execute files from directories outside of RAT/launch directory**:
 - Add additional bind mounts to your singularity shell command
 - Example:
+
 `singularity run --app build-rat -B path/to/rat:/rat,other/path:/stuff snoing.simg`
 - Now in the container, you have access to other/path by going to /stuff
 
@@ -66,7 +69,7 @@ I suggest this be done on your local machine due to the firewall on clusters not
 
 **[ADVANCED]**
 # To build the container
-To build, you must have root permissions and singularity installed on your machine (the image can be moved to a cluster once it has been built). Install singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu).
+To build, you must have **root permissions** and **singularity installed on your machine** (the image can be moved to a cluster once it has been built). Install singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu).
 
 Download the `Singularity` recipe file, and run the following command, which will produce a container file called `snoing.simg`:
 
