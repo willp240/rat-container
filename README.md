@@ -67,7 +67,7 @@ I suggest this be done on your local machine due to the firewall on clusters not
 
 `singularity help snoing.simg`
 
-**[ADVANCED]**
+# [ADVANCED]
 # To build the container
 To build, you must have **root permissions** and **singularity installed on your machine** (the image can be moved to a cluster once it has been built). Install singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu).
 
@@ -81,7 +81,7 @@ If you want to use multiple RAT instances simultaneously, then all you have to d
 # To modify Geant4
 If you need to edit Geant4 for any reason, you will have to modify the recipe file and make your changes accordingly.
 
-**F.A.Q.**
+# F.A.Q.
 
 I'm seeing "Error getting image manifest using url..." when I try to pull the container
 - This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, and transfer the image to your cluster with scp.
