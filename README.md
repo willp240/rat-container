@@ -1,33 +1,59 @@
 # snoing-2.0
+
+[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/3807) [![https://img.shields.io/badge/hosted-dockerhub-blue](https://img.shields.io/badge/hosted-dockerhub-blue)](https://hub.docker.com/r/jamierajewski/snoing-2.0)
+
+
 A singularity recipe for building a SNO+ environment for RAT. 
 
 For regular usage, simply download the pre-built container with the following instructions. For advanced users, see the build instructions below. 
 
 # [PLEASE READ]
 
-1. Because a container is a virtualized environment, it **does NOT** have your entire filesystem accessible.
-What this means is that you **won't have write/execute permissions** anywhere **except** the directory from
-which **you launched the container**. If you would like to be able to write and execute from other directories
-like scratch, project, cvmfs, etc. then please see the section below about **writing/executing outside of RAT/launch directory**.
+1. Singularity and Docker are similar tools but operate slightly differently. Singularity acts more like an overlay, where
+you have access to your filesystem as you would **outside** the container (with the same rights as you'd have outside), 
+whereas Docker provides you with an isolated virtual filesystem (meaning you **can't** access your files from outside 
+the container). 
 
-2. Regardless of whether you download or build the container, you can use and develop RAT as you see fit as it is external to the container.
+In summary, it is best to **mount** whatever directories you may need when running the container, whether in Docker 
+or Singularity (see the section "**To write/execute files from directories outside of RAT/launch directory**" below).
 
-3. Instructions to install Singularity itself can be found [here.](https://sylabs.io/guides/3.0/user-guide/installation.html)
+2. Regardless of whether you download or build the container, you can use and develop RAT as you see fit as it is external 
+to the container.
+
+3. Instructions to install Singularity can be found [here.](https://github.com/sylabs/singularity/blob/master/INSTALL.md) For
+Docker, instructions for each platform can be found [here.](https://docs.docker.com/install/#supported-platforms)
 
 # To download the pre-built container
-On your local machine, enter the command:
+**If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
+version of the container:
 
-`singularity pull --name snoing.simg shub://jamierajewski/snoing-2.0`
+`singularity pull --name snoing.sif shub://jamierajewski/snoing-2.0`
 
-I suggest this be done on your local machine due to the firewall on clusters not allowing Singularity Hub downloads through.
+I suggest this be done on your local machine due to the firewall on clusters not allowing SingularityHub downloads through 
+(until the container is available through CVMFS). If you have issues with this, please contact me.
+
+**If on your own local machine**, Docker should be used (especially on **MacOS/Windows**) as it is easier to install. The command to obtain the latest version of the container for Docker is:
+
+`docker pull jamierajewski/snoing-2.0`
 
 # Instructions on how to use the container with RAT
 
 **To build RAT for the first time**:
 - Clone RAT from GitHub
-- Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
+- Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory 
+/rat inside the container:
 
-`singularity run --app build-rat -B path/to/rat:/rat snoing.simg`
+For **Singularity**:
+
+`singularity shell -B path/to/rat:/rat snoing.sif`
+
+- Then, once you are within the container, run this command to setup the RAT environment:
+
+`source /home/scripts/setup-env.sh`
+
+- Finally, run this command to build RAT:
+
+`source /home/scripts/build-rat.sh`
 - RAT is now ready to use! Look at the instructions below for how to run it
 
 **To exit the container**:
