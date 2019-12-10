@@ -11,7 +11,6 @@ RUN mkdir /home/scripts
 # Create the environment setup script and give it exec permissions
 RUN printf '#!/bin/bash\nsource /home/root/bin/thisroot.sh\nsource /home/geant4.10.00.p02/bin/geant4.sh\nexport RAT_SCONS=/home/scons-2.1.0\n' > /home/scripts/setup-env.sh
 RUN printf 'if [ -f /rat/env.sh ]; then source /rat/env.sh; else printf "\nCould not find /rat/env.sh\nIf youre building RAT, please ignore.\nOtherwise, ensure RAT is mounted to /rat"; fi' >> /home/scripts/setup-env.sh
-RUN printf '\nif [[ $# == 1 ]] && [[ $1 == "-b" ]]; then /home/scripts/build-rat.sh; else /bin/bash; fi' >> /home/scripts/setup-env.sh
 RUN chmod +x /home/scripts/setup-env.sh
 
 # Create the build-rat script and give it exec permissions
@@ -63,14 +62,5 @@ RUN cd /home && \
     chmod +x scons-2.1.0/script/scons
 
 
-#Cleanup the cache to make the iamge smaller
+#Cleanup the cache to make the image smaller
 RUN cd /home && yum -y clean all && rm -rf /var/cache/yum && rm *.gz*
-
-# Set the entry point for the container; this is what the container will run when it is started up
-# (in this case it runs the script to set up the RAT environment)
-ENTRYPOINT ["/home/scripts/setup-env.sh"]
-
-
-# This command is appended to the entrypoint above if no other commands are provided when running
-# the container (this passes the "build rat" flag, which is default behaviour)
-CMD ["-b"]
