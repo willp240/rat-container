@@ -16,7 +16,6 @@ RUN chmod +x /home/scripts/setup-env.sh
 # Create the build-rat script and give it exec permissions
 RUN printf '#!/bin/bash\necho "[ BUILDING RAT ]"\necho "Now checking to see if RAT was mounted correctly..."' > /home/scripts/build-rat.sh
 RUN printf '\nif [ -d /rat ]; then cd /rat && ./configure && chmod +x /rat/env.sh && source /rat/env.sh && scons; else echo "RAT was not mounted correctly, please ensure it was mounted to /rat."; fi' >> /home/scripts/build-rat.sh
-RUN printf '\n/bin/bash' >> /home/scripts/build-rat.sh
 RUN chmod +x /home/scripts/build-rat.sh                                                                
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
