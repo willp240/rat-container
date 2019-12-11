@@ -12,10 +12,9 @@ For regular usage, simply download the pre-built container with the following in
 1. Singularity and Docker are similar tools but operate slightly differently. Singularity acts more like an overlay, where
 you have access to your filesystem as you would **outside** the container (with the same rights as you'd have outside), 
 whereas Docker provides you with an isolated virtual filesystem (meaning you **can't** access your files from outside 
-the container). 
-
-In summary, it is best to **mount** whatever directories you may need when running the container, whether in Docker 
-or Singularity (see the section "**To write/execute files from directories outside of RAT/launch directory**" below).
+the container). In summary, it is best to **mount** whatever directories you may need when running the container, whether 
+in Docker or Singularity (see the section "**To write/execute files from directories outside of RAT/launch 
+directory**" below).
 
 2. Regardless of whether you download or build the container, you can use and develop RAT as you see fit as it is external 
 to the container.
