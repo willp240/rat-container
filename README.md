@@ -1,7 +1,7 @@
 # snoing-2.0
 A singularity recipe for building a SNO+ environment for RAT. 
 
-For regular usage, simply download the pre-built container with the following instructions. For advanced users, see the build instructions below. 
+For regular usage, simply download the pre-built container with the following instructions. For advanced users, see the build instructions below. The default image is based on Scientific Linux 7, but an image for SL6 is also included.
 
 # [PLEASE READ]
 

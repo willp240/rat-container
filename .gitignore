@@ -1,0 +1,3 @@
+# Exclude RAT macros and emacs backups
+*.mac
+*~
