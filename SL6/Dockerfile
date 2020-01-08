@@ -21,9 +21,7 @@ RUN chmod +x /home/scripts/build-rat.sh
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
-RUN yum -y groups mark convert && \
-    yum -y grouplist && \
-    yum -y groupinstall "Compatibility Libraries" "Development Tools" "Scientific Support" && \
+RUN yum -y groupinstall "Compatibility Libraries" "Development Tools" "Scientific Support" && \
     yum -y install avahi-compat-libdns_sd-devel bc binutils binutils-devel bzip2 bzip2-devel cfitsio-devel \
     cmake coreutils curl curl-devel emacs expat-devel fftw fftw-devel fontconfig ftgl-devel g++ \
     gcc-4.8.5 gcc-gfortran git glew-devel glib2-devel glib-devel graphviz graphviz-devel \
