@@ -22,18 +22,12 @@ to the container.
 3. Instructions to install Singularity can be found [here.](https://github.com/sylabs/singularity/blob/master/INSTALL.md) For
 Docker, instructions for each platform can be found [here.](https://docs.docker.com/install/#supported-platforms)
 
-4. The default image is based on Scientific Linux 7, but there is an SL6 build included if RAT needs to be built in an SL6
-environment (for example, pushing a new RAT release to cvmfs requires both an SL6 and SL7 build).
-
 # To download the pre-built container
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
 
 For SL7:
 `singularity pull --name snoing.sif docker://jamierajewski/snoing-2.0:latest`
-
-For SL6:
-`singularity pull --name snoing.sif docker://jamierajewski/snoing-2.0:sl6`
 
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. This can make it
 difficult to use unless someone pulls the image locally first, then copies it to a shared location on the cluster.
@@ -43,9 +37,6 @@ The command to obtain the latest version of the container for Docker is:
 
 For SL7:
 `docker pull jamierajewski/snoing-2.0:latest`
-
-For SL6:
-`docker pull jamierajewski/snoing-2.0:sl6`
 
 Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it 
 downloads the image layers and adds an entry to your local **Docker registry** which can be viewed by going:
