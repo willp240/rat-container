@@ -33,6 +33,8 @@ version of the container:
 
 `singularity pull --name snoing.sif docker://jamierajewski/snoing-2.0:latest`
 
+Ensure that the Singularity version you are using is **&ge;3.2**
+
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. This can make it
 difficult to use unless someone pulls the image locally first, then copies it to a shared location on the cluster.
 
