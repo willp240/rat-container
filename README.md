@@ -22,11 +22,12 @@ to the container.
 3. Instructions to install Singularity can be found [here.](https://github.com/sylabs/singularity/blob/master/INSTALL.md) For
 Docker, instructions for each platform can be found [here.](https://docs.docker.com/install/#supported-platforms)
 
+4. As the DIRAC system no longer supports SL6, there is no longer a need to maintain an SL6 version when pushing new RAT releases to cvmfs. Therefore, the only image offered here is based on SL7.
+
 # To download the pre-built container
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
 
-For SL7:
 `singularity pull --name snoing.sif docker://jamierajewski/snoing-2.0:latest`
 
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. This can make it
@@ -35,7 +36,6 @@ difficult to use unless someone pulls the image locally first, then copies it to
 **If on your own local machine**, Docker should be used (especially on **MacOS/Windows**) as it is easier to install. 
 The command to obtain the latest version of the container for Docker is:
 
-For SL7:
 `docker pull jamierajewski/snoing-2.0:latest`
 
 Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it 
