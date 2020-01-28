@@ -27,6 +27,9 @@ Docker, instructions for each platform can be found [here.](https://docs.docker.
 5. To be clear, if you wish to use the prebuild image, then you do NOT need to clone this repo; simply follow the
 instructions below.
 
+6. At the moment, **display pass-through** is a **known issue**; please see the Github issue, or at the bottom of this
+documentation in the FAQ section for more information.
+
 # To download the pre-built container
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
@@ -38,6 +41,7 @@ Ensure that the Singularity version you are using is **&ge;3.2**
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. This can make it
 difficult to use unless someone pulls the image locally first, then copies it to a shared location on the cluster.
 
+***
 **If on your own local machine**, Docker should be used (especially on **MacOS/Windows**) as it is easier to install. 
 The command to obtain the latest version of the container for Docker is:
 
@@ -77,10 +81,12 @@ For *Docker*:
 
 - RAT is now ready to use! Look at the instructions below for how to run it
 
+***
 **To exit the container (Singularity and Docker)**:
 
 `exit`
 
+***
 **To run RAT**:
 
 - First, get a shell into the container with your RAT bound into it:
@@ -101,6 +107,13 @@ For *Docker*:
 - RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other 
 directories, additional bind mounts are necessary (see below).
 
+***
+**To use GUI apps like ROOT**:
+
+- Because
+
+
+***
 **To update RAT**:
 
 - Outside of the container, `cd` into your RAT repo, and run:
@@ -124,6 +137,7 @@ For *Docker*:
 
 `scons`
 
+***
 **To write/execute files from directories outside of RAT/launch directory**:
 - Add additional bind mounts to your Singularity or Docker command
 - Example:
@@ -138,6 +152,7 @@ For *Docker*:
 
 - Now in the container, you have access to /other/path at /stuff
 
+***
 **To use a specific branch of RAT**:
 - Ensure you git checkout to the branch OUTSIDE the container to avoid issues, then run RAT like above
 
@@ -151,11 +166,13 @@ called `snoing.sif`:
 
 `sudo singularity build snoing.sif Singularity`
 
+***
 # To run multiple RAT instances
 If you want to use multiple RAT instances simultaneously, then all you have to do is run an instance of this container 
 with each version of RAT that you want; do NOT try mounting multiple RATs to the SAME instance as the image was 
 not configured for this.
 
+***
 # To modify Geant4
 If you need to edit Geant4 for any reason, you will have to modify the recipe file and make your changes accordingly, then
 rebuild the container.
@@ -165,3 +182,14 @@ rebuild the container.
 **I'm seeing "Error getting image manifest using url..." when I try to pull the container**
 - This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, 
 and transfer the image to your cluster with scp.
+
+***
+**When I try to open the TBrowser/another GUI app, it doesn't show**
+- This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
+does not have access to the display by default so there is some configuration required.
+
+The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing. 
+Because you are remotely connected, the display is not configured by default to also connect. 
+
+I will update this documentation when workarounds have been found, but for the time being, the only confirmed method of
+getting the display to work is by using **singularity** on **your own machine** (if possible).
