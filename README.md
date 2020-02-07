@@ -42,7 +42,7 @@ At the moment, certain clusters (like Cedar) have firewall rules preventing acce
 difficult to use unless someone pulls the image locally first, then copies it to a shared location on the cluster.
 
 ***
-**If on your own local machine**, Docker should be used (especially on **MacOS/Windows**) as it is easier to install. 
+**If on your own local machine**, Docker should be used as it is easier to install. 
 The command to obtain the latest version of the container for Docker is:
 
 `docker pull jamierajewski/snoing-2.0:latest`
@@ -110,7 +110,17 @@ directories, additional bind mounts are necessary (see below).
 ***
 **To use GUI apps like ROOT**:
 
-- Because
+- The process is different on each OS but I will outline steps here to make it work on each. Note that these instructions
+  assume that since you are on your own machine, you are using **Docker**. Singularity may work with graphics as it is, but
+  Docker will be the definitive solution.
+  
+  For **Linux**:
+  
+  docker run -ti **--user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix** -v /absolute/path/to/rat:/rat
+  jamierajewski/snoing-2.0
+  
+  As you can see, the difference is a few extra options. This command is getting a bit out of control to
+  launch into, so feel free to set an alias in your .bashrc.
 
 
 ***
