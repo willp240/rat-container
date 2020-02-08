@@ -27,9 +27,6 @@ Docker, instructions for each platform can be found [here.](https://docs.docker.
 5. To be clear, if you wish to use the prebuild image, then you do NOT need to clone this repo; simply follow the
 instructions below.
 
-6. At the moment, **display pass-through** is a **known issue**; please see the Github issue, or at the bottom of this
-documentation in the FAQ section for more information.
-
 # To download the pre-built container
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
@@ -113,7 +110,7 @@ directories, additional bind mounts are necessary (see below).
 
 - The process is different on each OS but I will outline steps here to make it work on each. Note that these instructions
   assume that since you are on your own machine, you are using **Docker**. Singularity may work with graphics as it is, but
-  Docker will be the definitive solution.
+  these Docker solutions are the only ones that are tested and confirmed to be working.
   
   For **Linux**:
   
@@ -121,9 +118,12 @@ directories, additional bind mounts are necessary (see below).
   jamierajewski/snoing-2.0
   
   As you can see, the difference is a few extra options. This command is getting a bit out of control to
-  launch into, so feel free to set an alias in your .bashrc.
+  each time, so feel free to [set an alias in your .bashrc](https://askubuntu.com/a/17538).
   
   For **Windows 10**:
+  
+  Do **NOT** use the Windows Subsystem for Linux to run Docker. Docker already exists for Windows, and running it within the
+  subsystem adds an extra layer between the program and your display.
   
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
@@ -214,5 +214,4 @@ does not have access to the display by default so there is some configuration re
 The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing. 
 Because you are remotely connected, the display is not configured by default to also connect. 
 
-I will update this documentation when workarounds have been found, but for the time being, the only confirmed method of
-getting the display to work is by using **singularity** on **your own machine** (if possible).
+Known methods for getting a GUI working are listed in a section above for each OS under Docker.
