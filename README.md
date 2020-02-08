@@ -57,7 +57,8 @@ This difference doesn't have an effect on how it is actually used though.
 # Instructions on how to use the container with RAT
 
 **To build RAT for the first time**:
-- Clone RAT from GitHub
+- Clone RAT from GitHub (**NOTE** - If on Windows, make sure you run `git config --global core.autocrlf input` prior to
+  cloning or else Git will automatically change the Unix line-endings to Windows (which **will break the next steps**)
 - Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory 
 /rat inside the container:
 
@@ -67,7 +68,7 @@ For *Singularity*:
 
 For *Docker*:
 
-`docker run -ti -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0 bash`
+`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0 bash`
 
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
@@ -98,7 +99,7 @@ For *Singularity*:
 
 For *Docker*:
 
-`docker run -ti -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0 bash`
+`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0 bash`
 
 - Next, run the following command to source all environment scripts necessary for RAT:
 
@@ -108,7 +109,7 @@ For *Docker*:
 directories, additional bind mounts are necessary (see below).
 
 ***
-**To use GUI apps like ROOT**:
+**To use GUI apps like ROOT's TBrowser**:
 
 - The process is different on each OS but I will outline steps here to make it work on each. Note that these instructions
   assume that since you are on your own machine, you are using **Docker**. Singularity may work with graphics as it is, but
@@ -116,12 +117,24 @@ directories, additional bind mounts are necessary (see below).
   
   For **Linux**:
   
-  docker run -ti **--user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix** -v /absolute/path/to/rat:/rat
+  docker run -ti --rm **--user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix** -v /absolute/path/to/rat:/rat
   jamierajewski/snoing-2.0
   
   As you can see, the difference is a few extra options. This command is getting a bit out of control to
   launch into, so feel free to set an alias in your .bashrc.
+  
+  For **Windows 10**:
+  
+  1. Download and install [Xming](https://sourceforge.net/projects/xming/)
+  2. When Windows prompts you to allow it in the firewall, do so.
+  3. Whitelist the Docker port that Xming will connect to by opening a powershell window **as administrator** and running
+  `Add-Content 'C:\Program Files (x86)\Xming\X0.hosts' "`r`n10.0.75.2"`
+  4. Finally, restart Xming and now run the container in Docker with the following command:
+  `docker run --rm -ti -e DISPLAY=10.0.75.1:0 -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0`
 
+  For **macOS**:
+  
+  Work-in-progress
 
 ***
 **To update RAT**:
