@@ -128,7 +128,7 @@ directories, additional bind mounts are necessary (see below).
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
   3. Whitelist the Docker port that Xming will connect to by opening a powershell window **as administrator** and running
-  `Add-Content 'C:\Program Files (x86)\Xming\X0.hosts' "`r`n10.0.75.2"`
+  ``Add-Content 'C:\Program Files (x86)\Xming\X0.hosts' "`r`n10.0.75.2"``
   4. Finally, restart Xming and now run the container in Docker with the following command:
   `docker run --rm -ti -e DISPLAY=10.0.75.1:0 -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0`
 
