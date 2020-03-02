@@ -107,6 +107,7 @@ directories, additional bind mounts are necessary (see below).
 
 ***
 **To use GUI apps like ROOT's TBrowser**:
+(This is based on CERN's documentation for [running ROOT with graphics](https://hub.docker.com/r/rootproject/root-ubuntu16/))
 
 - The process is different on each OS but I will outline steps here to make it work on each. Note that these instructions
   assume that since you are on your own machine, you are using **Docker**. Singularity may work with graphics as it is, but
@@ -114,8 +115,7 @@ directories, additional bind mounts are necessary (see below).
   
   For **Linux**:
   
-  docker run -ti --rm **--user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix** -v /absolute/path/to/rat:/rat
-  jamierajewski/snoing-2.0
+  `docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0`
   
   As you can see, the difference is a few extra options. This command is getting a bit out of control to
   each time, so feel free to [set an alias in your .bashrc](https://askubuntu.com/a/17538).
@@ -134,7 +134,14 @@ directories, additional bind mounts are necessary (see below).
 
   For **macOS**:
   
-  Work-in-progress
+  1. Install [XQuartz](https://www.xquartz.org/)
+  2. Open XQuartz, and then go XQuartz -> Preferences -> Security, and tick the box "Allow connections from network clients"
+  3. In the XQuartz terminal, we need to find your IP and whitelist it; this can be done by running
+  `ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')` followed by `echo $ip`. If this is blank, change `en0` to
+  `en1` and retry (increment until you can see an IP). 
+  4. Once you can see an IP echo'd, run `xhost + $ip` which will whitelist the IP
+  5. Finally, you can run the container with the following:
+  `docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=$ip:0 jamierajewski/snoing-2.0`
 
 ***
 **To update RAT**:
