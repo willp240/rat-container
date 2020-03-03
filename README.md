@@ -1,6 +1,6 @@
-# snoing-2.0
+# rat-container
 
-[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/3807) [![https://img.shields.io/badge/hosted-dockerhub-blue](https://img.shields.io/badge/hosted-dockerhub-blue)](https://hub.docker.com/r/jamierajewski/snoing-2.0)
+[![https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg](https://www.singularity-hub.org/static/img/hosted-singularity--hub-%23e32929.svg)](https://singularity-hub.org/collections/3807) [![https://img.shields.io/badge/hosted-dockerhub-blue](https://img.shields.io/badge/hosted-dockerhub-blue)](https://hub.docker.com/r/jamierajewski/rat-container)
 
 
 Singularity and Docker recipes to build a SNO+ environment for RAT.
@@ -31,7 +31,7 @@ instructions below.
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
 
-`singularity pull --name snoing.sif docker://jamierajewski/snoing-2.0:latest`
+`singularity pull --name rat-container.sif docker://jamierajewski/rat-container:latest`
 
 Ensure that the Singularity version you are using is **&ge;3.2**
 
@@ -42,7 +42,7 @@ difficult to use unless someone pulls the image locally first, then copies it to
 **If on your own local machine**, Docker should be used as it is easier to install. 
 The command to obtain the latest version of the container for Docker is:
 
-`docker pull jamierajewski/snoing-2.0:latest`
+`docker pull jamierajewski/rat-container:latest`
 
 Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it 
 downloads the image layers and adds an entry to your local **Docker registry** which can be viewed by going:
@@ -61,11 +61,11 @@ This difference doesn't have an effect on how it is actually used though.
 
 For *Singularity*:
 
-`singularity shell -B path/to/rat:/rat snoing.sif`
+`singularity shell -B path/to/rat:/rat rat-container.sif`
 
 For *Docker*:
 
-`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0 bash`
+`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash`
 
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
@@ -92,11 +92,11 @@ For *Docker*:
   
 For *Singularity*:
 
-`singularity shell -B path/to/rat:/rat snoing.sif`
+`singularity shell -B path/to/rat:/rat rat-container.sif`
 
 For *Docker*:
 
-`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0 bash`
+`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash`
 
 - Next, run the following command to source all environment scripts necessary for RAT:
 
@@ -115,7 +115,7 @@ directories, additional bind mounts are necessary (see below).
   
   For **Linux**:
   
-  `docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0`
+  `docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container`
   
   As you can see, the difference is a few extra options. This command is getting a bit out of control to
   each time, so feel free to [set an alias in your .bashrc](https://askubuntu.com/a/17538).
@@ -130,7 +130,7 @@ directories, additional bind mounts are necessary (see below).
   3. Whitelist the Docker port that Xming will connect to by opening a powershell window **as administrator** and running
   ``Add-Content 'C:\Program Files (x86)\Xming\X0.hosts' "`r`n10.0.75.2"``
   4. Finally, restart Xming and now run the container in Docker with the following command:
-  `docker run --rm -ti -e DISPLAY=10.0.75.1:0 -v /absolute/path/to/rat:/rat jamierajewski/snoing-2.0`
+  `docker run --rm -ti -e DISPLAY=10.0.75.1:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container`
 
   For **macOS**:
   
@@ -141,7 +141,7 @@ directories, additional bind mounts are necessary (see below).
   `en1` and retry (increment until you can see an IP). 
   4. Once you can see an IP echo'd, run `xhost + $ip` which will whitelist the IP
   5. Finally, you can run the container with the following:
-  `docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=$ip:0 jamierajewski/snoing-2.0`
+  `docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=$ip:0 jamierajewski/rat-container`
 
 ***
 **To update RAT**:
@@ -153,11 +153,11 @@ directories, additional bind mounts are necessary (see below).
 
 For *Singularity*:
 
-`singularity shell -B path/to/rat:/rat snoing.sif`
+`singularity shell -B path/to/rat:/rat rat-container.sif`
 
 For *Docker*:
 
-`docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/snoing-2.0 bash`
+`docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container bash`
 
 - Source the environment:
 
@@ -174,11 +174,11 @@ For *Docker*:
 
 For *Singularity*:
 
-`singularity shell -B path/to/rat:/rat,/other/path:/stuff snoing.sif`
+`singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif`
 
 For *Docker*:
 
-`docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/snoing-2.0 bash`
+`docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container bash`
 
 - Now in the container, you have access to /other/path at /stuff
 
@@ -192,9 +192,9 @@ To build, you must have **root permissions** and **Singularity or Docker install
 moved to a cluster once it has been built). Install Singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu) to get an older but capable Singularity.
 
 Download the `Singularity` recipe file, and run the following command, which will produce a container file 
-called `snoing.sif`:
+called `rat-container.sif`:
 
-`sudo singularity build snoing.sif Singularity`
+`sudo singularity build rat-container.sif Singularity`
 
 ***
 # To run multiple RAT instances
