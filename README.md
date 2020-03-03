@@ -213,7 +213,6 @@ rebuild the container.
 - This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, 
 and transfer the image to your cluster with scp.
 
-***
 **When I try to open the TBrowser/another GUI app, it doesn't show**
 - This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
 does not have access to the display by default so there is some configuration required.
