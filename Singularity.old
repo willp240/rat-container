@@ -9,7 +9,7 @@ Direct questions, comments or bugs to Jamie at
 To build RAT:
 - After acquiring the container, clone RAT from GitHub OUTSIDE the container
 - Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory /rat inside the container:
-    singularity run -B path/to/rat:/rat snoing.simg
+    singularity run -B path/to/rat:/rat rat-container.simg
 - RAT is now ready to use!
 
 To exit the container:
@@ -23,7 +23,7 @@ To update RAT:
 
 To run RAT:
 - Enter the following command, filling in the path to RAT with your own:
-    singularity shell -B path/to/rat:/rat snoing.simg
+    singularity shell -B path/to/rat:/rat rat-container.simg
     * It is important to mount your rat dir to /rat as the build
     * scripts look there for it!
 - RAT is primed, now you can navigate to /rat to run things
@@ -32,7 +32,7 @@ To run RAT:
 To read/write files from directories outside of RAT/home:
 - Add additional bind mounts to your singularity shell command
 - Example:
-    singularity shell -B path/to/rat:/rat,other/path:/stuff snoing.simg
+    singularity shell -B path/to/rat:/rat,other/path:/stuff rat-container.simg
 - Now in the container, you have access to other/path by going to /stuff
 
 To use a specific branch of RAT:
