@@ -7,6 +7,13 @@ Singularity and Docker recipes to build a SNO+ environment for RAT.
 
 For regular usage, simply download the pre-built container with the following instructions for your container platform of choice. For advanced users, see the build instructions below.
 
+# FEATURES
+- Full RAT-compatible environment, including ROOT5, GEANT4 and scons
+- Can build any version of RAT
+- GUI output support on all operating systems
+- TensorFlow and CppFlow (CPU-only for the time being)
+- Singularity and Docker compatibility
+
 # [PLEASE READ]
 
 1. Singularity and Docker are similar tools but operate slightly differently. Singularity acts more like an overlay, where
@@ -185,6 +192,11 @@ For *Docker*:
 ***
 **To use a specific branch of RAT**:
 - Ensure you git checkout to the branch OUTSIDE the container to avoid issues, then run RAT like above
+
+***
+**To use TensorFlow/cppflow**:
+- The libraries are already installed (tensorflow at /usr/local/lib, cppflow repo is at /home/software) and
+  the environment variables are set in the setup-env.sh script, so you should be able to just use it after sourcing
 
 # [ADVANCED]
 # To build the container
