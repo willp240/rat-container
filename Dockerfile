@@ -12,7 +12,7 @@ RUN mkdir /home/scripts
 RUN printf '#!/bin/bash\nsource /home/root/bin/thisroot.sh\nsource /home/geant4.10.00.p02/bin/geant4.sh\nexport RAT_SCONS=/home/scons-2.1.0\n' > /home/scripts/setup-env.sh
 RUN printf 'export TF_DIR=/usr/local\nexport CPPFLOW_DIR=/home/software/cppflow\n' >> /home/scripts/setup-env.sh
 RUN printf 'export LIBRARY_PATH=$LIBRARY_PATH:$TF_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$TF_DIR/lib\nexport LIBRARY_PATH=$LIBRARY_PATH:$CPPFLOW_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CPPFLOW_DIR/lib\n' >> /home/scripts/setup-env.sh
-RUN printf 'if [ -f /rat/env.sh ]; then source /rat/env.sh; else printf "\nCould not find /rat/env.sh\nIf youre building RAT, please ignore.\nOtherwise, ensure RAT is mounted to /rat"; fi' >> /home/scripts/setup-env.sh
+RUN printf 'if [ -f /rat/env.sh ]; then source /rat/env.sh; else printf "\nCould not find /rat/env.sh\nIf youre building RAT, please ignore.\nOtherwise, ensure RAT is mounted to /rat\n"; fi' >> /home/scripts/setup-env.sh
 RUN chmod +x /home/scripts/setup-env.sh
 
 # Create the build-rat script and give it exec permissions
