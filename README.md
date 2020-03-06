@@ -13,6 +13,10 @@ For regular usage, simply download the pre-built container with the following in
 - GUI output support on all operating systems
 - TensorFlow and CppFlow (CPU-only for the time being)
 - Singularity and Docker compatibility
+- *Cluster-compatible
+
+*The image can be uploaded manually, pulled directly (if the cluster firewall permits) or run from /cvmfs; however, the cvmfs
+image is not always up-to-date with the repo version. This has been [identified as an issue](https://github.com/snoplus/rat-container/issues/8) with a possible solution posed.
 
 # [PLEASE READ]
 
@@ -31,7 +35,7 @@ Docker, instructions for each platform can be found [here.](https://docs.docker.
 
 4. As the DIRAC system no longer supports SL6, there is no longer a need to maintain an SL6 version when pushing new RAT releases to cvmfs. Therefore, the only image offered here is based on SL7.
 
-5. To be clear, if you wish to use the prebuild image, then you do NOT need to clone this repo; simply follow the
+5. To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
 instructions below.
 
 # To download the pre-built container
@@ -42,8 +46,9 @@ version of the container:
 
 Ensure that the Singularity version you are using is **&ge;3.2**
 
-At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. This can make it
-difficult to use unless someone pulls the image locally first, then copies it to a shared location on the cluster.
+At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. There is a version of
+the image located at `/cvmfs/snoplus.egi.eu/sl7/sw/containers/rat-container.sif` but keep in mind that it may not always be
+the latest version (this shouldn't matter if you are simply building/running RAT).
 
 ***
 **If on your own local machine**, Docker should be used as it is easier to install. 
