@@ -32,6 +32,8 @@ to the container.
 
 3. Instructions to install Singularity can be found [here.](https://github.com/sylabs/singularity/blob/master/INSTALL.md) For
 Docker, instructions for each platform can be found [here.](https://docs.docker.com/install/#supported-platforms)
+- **For Singularity, version 3.2+ is required**
+- **For Docker, version 19.0+ is required**
 
 4. As the DIRAC system no longer supports SL6, there is no longer a need to maintain an SL6 version when pushing new RAT releases to cvmfs. Therefore, the only image offered here is based on SL7.
 
