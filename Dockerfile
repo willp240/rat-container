@@ -22,16 +22,12 @@ RUN chmod +x /home/scripts/build-rat.sh
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
-RUN yum -y groups mark convert && \
-    yum -y grouplist && \
-    yum -y groupinstall "Compatibility Libraries" "Development Tools" "Scientific Support" && \
-    yum -y install avahi-compat-libdns_sd-devel bc binutils binutils-devel bzip2 bzip2-devel cfitsio-devel \
-    cmake coreutils curl curl-devel emacs expat-devel fftw fftw-devel fontconfig ftgl-devel g++ \
-    gcc-4.8.5 gcc-gfortran git glew-devel glib2-devel glib-devel graphviz graphviz-devel \
-    gsl gsl-devel gsl-static java-1.8.0-openjdk java-1.8.0-openjdk-devel libcurl-devel \
-    libgfortran libgomp libldap-dev libX11-devel libXext-devel libXft-devel libxml2-devel \
-    libXpm-devel libXt-devel make man mesa-libGL-devel mesa-libGLU-devel mysql-devel nano \
-    openssl-devel pcre-devel python python-devel python-pip rsync strace valgrind wget
+RUN yum install -y vim emacs valgrid gdb which wget git gcc-c++-4.8.5-39.el7.x86_64 gcc-gfortran python-devel \
+    python-argparse uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel \
+    libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel \
+    libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake && \
+    yum clean all && \
+    rm -rf /var/cache/yum
 
 # Fetch and install ROOT 5.34.36 from source
 RUN cd /home && \
@@ -39,28 +35,32 @@ RUN cd /home && \
     tar zxvf root_v5.34.36.source.tar.gz && \
     cd root && \
     ./configure --enable-minuit2 --enable-python --enable-mathmore && \
-    # Currently set to compile on 4 cores; increase this if you have more available
     make -j4 && \
-    chmod +x /home/root/bin/thisroot.sh && source /home/root/bin/thisroot.sh
+    chmod +x /home/root/bin/thisroot.sh && source /home/root/bin/thisroot.sh && \
+    rm -rf root_v5.34.36.source.tar.gz
 
 # Fetch and install GEANT4 from source
 RUN cd /home && \
     wget http://geant4.cern.ch/support/source/geant4.10.00.p02.tar.gz && \
-    tar zxvf geant4.10.00.p02.tar.gz && \
+    mkdir geant4.10.00.p02-source && \
+    tar -xvzf geant4.10.00.p02.tar.gz -C geant4.10.00.p02-source --strip-components 1 && \
+    mkdir geant4.10.00.p02 && \
     mkdir geant4.10.00.p02-build && \
     cd geant4.10.00.p02-build && \
-    cmake -DGEANT4_INSTALL_DATA=ON -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p02 ../geant4.10.00.p02 && \
-    make -j4 && \
-    make install && \
-    chmod +x /home/geant4.10.00.p02/bin/geant4.sh && source /home/geant4.10.00.p02/bin/geant4.sh && \
-    chmod +x /home/geant4.10.00.p02/share/Geant4-10.0.2/geant4make/geant4make.sh && \
-    source /home/geant4.10.00.p02/share/Geant4-10.0.2/geant4make/geant4make.sh
+    cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p02 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p02-source && \
+    make ../geant4.10.00.p02 && \
+    make install ../geant4.10.00.p02 && \
+    cd .. && \
+    rm -rf geant4.10.00.p02-source && \
+    rm -rf geant4.10.00.p02-build && \
+    rm -rf geant4.10.00.p02.tar.gz
 
 # Fetch and install scons
 RUN cd /home && \
     wget http://downloads.sourceforge.net/project/scons/scons/2.1.0/scons-2.1.0.tar.gz && \
     tar zxvf scons-2.1.0.tar.gz && \
-    chmod +x scons-2.1.0/script/scons
+    chmod +x scons-2.1.0/script/scons && \
+    rm -rf scons-2.1.0.tar.gz
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
 RUN mkdir /home/software && \
@@ -77,4 +77,4 @@ RUN mkdir /home/software && \
     make
 
 # Cleanup the cache to make the image smaller
-RUN cd /home && yum -y clean all && rm -rf /var/cache/yum && rm *.gz*
+RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
