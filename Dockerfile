@@ -10,8 +10,8 @@ RUN mkdir /home/scripts
 
 # Create the environment setup script and give it exec permissions
 RUN printf '#!/bin/bash\nsource /home/root/bin/thisroot.sh\nsource /home/geant4.10.00.p02/bin/geant4.sh\nexport RAT_SCONS=/home/scons-2.1.0\n' > /home/scripts/setup-env.sh
-#RUN printf 'export TF_DIR=/usr/local\nexport CPPFLOW_DIR=/home/software/cppflow\n' >> /home/scripts/setup-env.sh
-#RUN printf 'export LIBRARY_PATH=$LIBRARY_PATH:$TF_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$TF_DIR/lib\nexport LIBRARY_PATH=$LIBRARY_PATH:$CPPFLOW_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CPPFLOW_DIR/lib\n' >> /home/scripts/setup-env.sh
+RUN printf 'export TF_DIR=/usr/local\nexport CPPFLOW_DIR=/home/software/cppflow\n' >> /home/scripts/setup-env.sh
+RUN printf 'export LIBRARY_PATH=$LIBRARY_PATH:$TF_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$TF_DIR/lib\nexport LIBRARY_PATH=$LIBRARY_PATH:$CPPFLOW_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CPPFLOW_DIR/lib\n' >> /home/scripts/setup-env.sh
 RUN printf 'if [ -f /rat/env.sh ]; then source /rat/env.sh; else printf "\nCould not find /rat/env.sh\nIf youre building RAT, please ignore.\nOtherwise, ensure RAT is mounted to /rat\n"; fi' >> /home/scripts/setup-env.sh
 RUN chmod +x /home/scripts/setup-env.sh
 
@@ -63,18 +63,18 @@ RUN cd /home && \
     rm -rf scons-2.1.0.tar.gz
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
-# RUN mkdir /home/software && \
-#     cd /home/software && \
-#     wget -O tflow https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz && \
-#     tar -C /usr/local -xzf tflow && \
-#     export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib && \
-#     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib && \
-#     rm tflow && \
-#     git clone git://github.com/mark-r-anderson/cppflow.git && \
-#     cd cppflow && \
-#     git checkout ML-fitter && \
-#     mkdir lib && \
-#     make
+RUN mkdir /home/software && \
+    cd /home/software && \
+    wget -O tflow https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz && \
+    tar -C /usr/local -xzf tflow && \
+    export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib && \
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib && \
+    rm tflow && \
+    git clone git://github.com/mark-r-anderson/cppflow.git && \
+    cd cppflow && \
+    git checkout ML-fitter && \
+    mkdir lib && \
+    make
 
 # Cleanup the cache to make the image smaller
 RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
