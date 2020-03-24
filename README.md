@@ -162,7 +162,7 @@ directories, additional bind mounts are necessary (see below).
 
 - Outside of the container, `cd` into your RAT repo, and run:
 
-`git fetch && git merge`
+`git pull origin master`
 - Then, run the container:
 
 For *Singularity*:
