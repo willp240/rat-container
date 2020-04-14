@@ -232,6 +232,10 @@ rebuild the container.
 - This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, 
 and transfer the image to your cluster with scp.
 
+**I'm seeing errors when running scons to rebuild RAT after updating to a new RAT release**
+- This happens when you use the GUI-enabled docker command (not the standard command) when launching the container to rebuild 
+RAT. Please review the instructions for how to update RAT above for the correct way to update.
+
 **When I try to open the TBrowser/another GUI app, it doesn't show**
 - This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
 does not have access to the display by default so there is some configuration required.
