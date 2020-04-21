@@ -25,7 +25,7 @@ RUN chmod +x /home/scripts/build-rat.sh
 RUN yum install -y vim emacs valgrid gdb which wget git gcc-c++-4.8.5-39.el7.x86_64 gcc-gfortran python-devel \
     python-argparse uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel \
     libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel \
-    libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake && \
+    libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html && \
     yum clean all && \
     rm -rf /var/cache/yum
 
