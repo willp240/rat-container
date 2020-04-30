@@ -136,8 +136,10 @@ directories, additional bind mounts are necessary (see below).
   
   For **Windows 10**:
   
-  Do **NOT** use the Windows Subsystem for Linux to run Docker. Docker already exists for Windows, and running it within the
-  subsystem adds an extra layer between the program and your display.
+  There are two options for Windows: One is to use Docker natively, and the other is to run within the Windows Subsystem for 
+  Linux (WSL). If you don't know what WSL is, then proceed with the native Windows instructions; otherwise, feel free to use 
+  the above instructions for Linux, but keep in mind that $DISPLAY isn't set, so you need to put in the IP of the WSL (ex. 
+  DISPLAY=172.26.0.1:0)
   
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
