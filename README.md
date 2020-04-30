@@ -228,6 +228,19 @@ rebuild the container.
 
 # F.A.Q.
 
+**On macOS I see "docker: Error response from daemon: Mounts denied: The path ... is not shared from OS X and is not known to Docker."**
+- This happens because Docker only allows mounting from 4 locations by default to follow Apple's sandbox guidelines; these locations are:
+
+  /Users
+  
+  /tmp
+  
+  /private
+  
+  /Volumes
+  
+- Ensure your RAT repository is stored in one of these locations (the easiest would be simply under /Users/[your username]/rat)
+
 **I'm seeing "Error getting image manifest using url..." when I try to pull the container**
 - This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, 
 and transfer the image to your cluster with scp.
