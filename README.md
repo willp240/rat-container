@@ -40,6 +40,9 @@ Docker, instructions for each platform can be found [here.](https://docs.docker.
 5. To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
 instructions below.
 
+# New Video Tutorial
+- [Available here (Requires SNO+ DocDB access)](https://www.snolab.ca/snoplus/private/DocDB/0062/006281/001/RAT%20container%20tutorial.mp4)
+
 # To download the pre-built container
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
