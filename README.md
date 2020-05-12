@@ -146,21 +146,16 @@ directories, additional bind mounts are necessary (see below).
   
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
-  3. Whitelist the Docker port that Xming will connect to by opening a powershell window **as administrator** and running
-  ``Add-Content 'C:\Program Files (x86)\Xming\X0.hosts' "`r`n10.0.75.2"``
-  4. Finally, restart Xming and now run the container in Docker with the following command:
-  `docker run --rm -ti -e DISPLAY=10.0.75.1:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container`
+  3. Finally, restart Xming and now run the container in Docker with the following command:
+  `docker run --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container`
 
   For **macOS**:
   
   1. Install [XQuartz](https://www.xquartz.org/)
   2. Open XQuartz, and then go XQuartz -> Preferences -> Security, and tick the box "Allow connections from network clients"
-  3. In the XQuartz terminal, we need to find your IP and whitelist it; this can be done by running
-  `ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')` followed by `echo $ip`. If this is blank, change `en0` to
-  `en1` and retry (increment until you can see an IP). 
-  4. Once you can see an IP echo'd, run `xhost + $ip` which will whitelist the IP
-  5. Finally, you can run the container with the following:
-  `docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=$ip:0 jamierajewski/rat-container`
+  3. Run `xhost + 127.0.0.1` which will whitelist your local IP
+  4. Finally, you can run the container with the following:
+  `docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 jamierajewski/rat-container`
 
 ***
 **To update RAT**:
