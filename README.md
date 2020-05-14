@@ -46,9 +46,9 @@ instructions below.
 # To download the pre-built container
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
-
-`singularity pull --name rat-container.sif docker://jamierajewski/rat-container:latest`
-
+```
+singularity pull --name rat-container.sif docker://jamierajewski/rat-container:latest
+```
 Ensure that the Singularity version you are using is **&ge;3.2**
 
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. There is a version of
@@ -58,14 +58,14 @@ the latest version (this shouldn't matter if you are simply building/running RAT
 ***
 **If on your own local machine**, Docker should be used as it is easier to install. 
 The command to obtain the latest version of the container for Docker is:
-
-`docker pull jamierajewski/rat-container:latest`
-
+```
+docker pull jamierajewski/rat-container:latest
+```
 Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it 
 downloads the image layers and adds an entry to your local **Docker registry** which can be viewed by going:
-
-`docker images`
-
+```
+docker images
+```
 This difference doesn't have an effect on how it is actually used though.
 
 # Instructions on how to use the container with RAT
@@ -77,29 +77,30 @@ This difference doesn't have an effect on how it is actually used though.
 /rat inside the container:
 
 For *Singularity*:
-
-`singularity shell -B path/to/rat:/rat rat-container.sif`
-
+```
+singularity shell -B path/to/rat:/rat rat-container.sif
+```
 For *Docker*:
-
-`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash`
-
+```
+docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash
+```
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
 - Then, once you are within the container (Docker or Singularity), run this command to setup the RAT environment:
-
-`source /home/scripts/setup-env.sh`
-
+```
+source /home/scripts/setup-env.sh
+```
 - Finally, run this command to build RAT:
-
-`source /home/scripts/build-rat.sh`
-
+```
+source /home/scripts/build-rat.sh
+```
 - RAT is now ready to use! Look at the instructions below for how to run it
 
 ***
 **To exit the container (Singularity and Docker)**:
-
-`exit`
+```
+exit
+```
 
 ***
 **To run RAT**:
@@ -108,17 +109,17 @@ For *Docker*:
 (It is **important** to **mount your rat directory to /rat** as the build scripts look there for it!)
   
 For *Singularity*:
-
-`singularity shell -B path/to/rat:/rat rat-container.sif`
-
+```
+singularity shell -B path/to/rat:/rat rat-container.sif
+```
 For *Docker*:
-
-`docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash`
-
+```
+docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash
+```
 - Next, run the following command to source all environment scripts necessary for RAT:
-
-`source /home/scripts/setup-env.sh`
-
+```
+source /home/scripts/setup-env.sh
+```
 - RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other 
 directories, additional bind mounts are necessary (see below).
 
@@ -131,9 +132,9 @@ directories, additional bind mounts are necessary (see below).
   these Docker solutions are the only ones that are tested and confirmed to be working.
   
   For **Linux**:
-  
-  `docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container`
-  
+  ```
+  docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+  ```
   As you can see, the difference is a few extra options. This command is getting a bit out of control to
   each time, so feel free to [set an alias in your .bashrc](https://askubuntu.com/a/17538).
   
@@ -147,7 +148,9 @@ directories, additional bind mounts are necessary (see below).
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
   3. Finally, restart Xming and now run the container in Docker with the following command:
-  `docker run --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container`
+  ```
+  docker run --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+  ```
 
   For **macOS**:
   
@@ -155,31 +158,35 @@ directories, additional bind mounts are necessary (see below).
   2. Open XQuartz, and then go XQuartz -> Preferences -> Security, and tick the box "Allow connections from network clients"
   3. Run `xhost + 127.0.0.1` which will whitelist your local IP
   4. Finally, you can run the container with the following:
-  `docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 jamierajewski/rat-container`
+  ```
+  docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 jamierajewski/rat-container
+  ```
 
 ***
 **To update RAT**:
 
 - Outside of the container, `cd` into your RAT repo, and run:
-
-`git pull origin master`
+```
+git pull origin master
+```
 - Then, run the container:
 
 For *Singularity*:
-
-`singularity shell -B path/to/rat:/rat rat-container.sif`
-
+```
+singularity shell -B path/to/rat:/rat rat-container.sif
+```
 For *Docker*:
-
-`docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container bash`
-
+```
+docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container bash
+```
 - Source the environment:
-
-`source /home/scripts/setup-env.sh`
-
+```
+source /home/scripts/setup-env.sh
+```
 - Finally, run scons to rebuild RAT:
-
-`scons`
+```
+scons
+```
 
 ***
 **To write/execute files from directories outside of RAT/launch directory**:
@@ -187,13 +194,13 @@ For *Docker*:
 - Example:
 
 For *Singularity*:
-
-`singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif`
-
+```
+singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
+```
 For *Docker*:
-
-`docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container bash`
-
+```
+docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container bash
+```
 - Now in the container, you have access to /other/path at /stuff
 
 ***
@@ -212,8 +219,9 @@ moved to a cluster once it has been built). Install Singularity manually, or do 
 
 Download the `Singularity` recipe file, and run the following command, which will produce a container file 
 called `rat-container.sif`:
-
-`sudo singularity build rat-container.sif Singularity`
+```
+sudo singularity build rat-container.sif Singularity
+```
 
 ***
 # To run multiple RAT instances
@@ -230,15 +238,12 @@ rebuild the container.
 
 **On macOS I see "docker: Error response from daemon: Mounts denied: The path ... is not shared from OS X and is not known to Docker."**
 - This happens because Docker only allows mounting from 4 locations by default to follow Apple's sandbox guidelines; these locations are:
-
-  /Users
-  
-  /tmp
-  
-  /private
-  
-  /Volumes
-  
+```
+/Users
+/tmp
+/private
+/Volumes
+```  
 - Ensure your RAT repository is stored in one of these locations (the easiest would be simply under /Users/[your username]/rat)
 
 **I'm seeing "Error getting image manifest using url..." when I try to pull the container**
