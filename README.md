@@ -82,7 +82,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash
+docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
 ```
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
@@ -112,7 +112,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash
+docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
 ```
 - RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other 
 directories, additional bind mounts are necessary (see below).
@@ -171,7 +171,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container bash
+docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container
 ```
 - Finally, run scons to rebuild RAT:
 ```
@@ -189,7 +189,7 @@ singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container bash
+docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container
 ```
 - Now in the container, you have access to /other/path at /stuff
 
@@ -235,6 +235,10 @@ rebuild the container.
 /Volumes
 ```  
 - Ensure your RAT repository is stored in one of these locations (the easiest would be simply under /Users/[your username]/rat)
+
+**I'm seeing "/usr/bin/bash: /usr/bin/bash: cannot execute binary file" when I try to run the container**
+- This happens because you have `bash` at the end of your run command; in the new version, this is no longer necessary as it
+will launch bash by itself.
 
 **I'm seeing "Error getting image manifest using url..." when I try to pull the container**
 - This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, 
