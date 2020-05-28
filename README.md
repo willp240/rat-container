@@ -40,7 +40,7 @@ Docker, instructions for each platform can be found [here.](https://docs.docker.
 5. To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
 instructions below.
 
-# New Video Tutorial
+# New Video Tutorial (slightly outdated - no longer necessary to source the setup-env.sh on startup)
 - [Available here (Requires SNO+ DocDB access)](https://www.snolab.ca/snoplus/private/DocDB/0062/006281/001/RAT%20container%20tutorial.mp4)
 
 # To download the pre-built container
@@ -86,10 +86,8 @@ docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container ba
 ```
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
-- Then, once you are within the container (Docker or Singularity), run this command to setup the RAT environment:
-```
-source /home/scripts/setup-env.sh
-```
+- Once in the container, you may see a message about how it could not find /rat/env.sh; this is expected as you have not built RAT yet. If the build is successful, you shouldn't see this message next time.
+
 - Finally, run this command to build RAT:
 ```
 source /home/scripts/build-rat.sh
@@ -115,10 +113,6 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 For *Docker*:
 ```
 docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container bash
-```
-- Next, run the following command to source all environment scripts necessary for RAT:
-```
-source /home/scripts/setup-env.sh
 ```
 - RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other 
 directories, additional bind mounts are necessary (see below).
@@ -178,10 +172,6 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 For *Docker*:
 ```
 docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container bash
-```
-- Source the environment:
-```
-source /home/scripts/setup-env.sh
 ```
 - Finally, run scons to rebuild RAT:
 ```
