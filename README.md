@@ -134,14 +134,13 @@ directories, additional bind mounts are necessary (see below).
   
   For **Windows 10**:
   
-  There are two options for Windows: One is to use Docker natively, and the other is to run within the Windows Subsystem for 
-  Linux (WSL). If you don't know what WSL is, then proceed with the native Windows instructions; otherwise, feel free to use 
-  the above instructions for Linux, but keep in mind that $DISPLAY isn't set, so you need to put in the IP of the WSL (ex. 
-  DISPLAY=172.26.0.1:0)
+  As of the new May 2020 Windows update, the Windows Subsystem for Linux (WSL) version 2 is out. Docker desktop can be
+  configured to use this which is the recommended way to run Docker on Windows. Ensure WSL2 is enabled in the Docker Desktop
+  settings, then follow these instructions:
   
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
-  3. Finally, restart Xming and now run the container in Docker with the following command:
+  3. Finally, restart Xming and now run the following command in Powershell or WSL2:
   ```
   docker run --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container
   ```
