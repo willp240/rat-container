@@ -28,7 +28,7 @@ RUN cd /home && \
     ./configure --enable-minuit2 --enable-python --enable-mathmore && \
     make -j4 && \
     chmod +x /home/root/bin/thisroot.sh && source /home/root/bin/thisroot.sh && \
-    rm -rf root_v5.34.36.source.tar.gz
+    rm -rf /home/root_v5.34.36.source.tar.gz
 
 # Fetch and install GEANT4 from source
 RUN cd /home && \
