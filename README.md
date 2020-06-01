@@ -172,6 +172,10 @@ For *Docker*:
 ```
 docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container
 ```
+- Navigate to the RAT directory:
+```
+cd /rat
+```
 - Finally, run scons to rebuild RAT:
 ```
 scons
@@ -246,6 +250,7 @@ and transfer the image to your cluster with scp.
 **I'm seeing errors when running scons to rebuild RAT after updating to a new RAT release**
 - This happens when you use the GUI-enabled docker command (not the standard command) when launching the container to rebuild 
 RAT. Please review the instructions for how to update RAT above for the correct way to update.
+- This can also happen if you don't run scons within the /rat directory as it won't be able to find the correct files
 
 **When I try to open the TBrowser/another GUI app, it doesn't show**
 - This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
