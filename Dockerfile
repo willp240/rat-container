@@ -20,15 +20,15 @@ RUN yum install -y vim emacs valgrid gdb which wget git gcc-c++-4.8.5-39.el7.x86
     yum clean all && \
     rm -rf /var/cache/yum
 
-# Fetch and install ROOT 5.34.36 from source
+# Fetch and install ROOT 5.34.38 from source
 RUN cd /home && \
-    wget https://root.cern.ch/download/root_v5.34.36.source.tar.gz && \
-    tar zxvf root_v5.34.36.source.tar.gz && \
+    wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
+    tar zxvf root_v5.34.38.source.tar.gz && \
     cd root && \
     ./configure --enable-minuit2 --enable-python --enable-mathmore && \
     make -j4 && \
     chmod +x /home/root/bin/thisroot.sh && source /home/root/bin/thisroot.sh && \
-    rm -rf /home/root_v5.34.36.source.tar.gz
+    rm -rf /home/root_v5.34.38.source.tar.gz
 
 # Fetch and install GEANT4 from source
 RUN cd /home && \
