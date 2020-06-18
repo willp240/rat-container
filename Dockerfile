@@ -8,7 +8,7 @@ SHELL ["/bin/bash", "-c"]
 # Create place to copy scripts to
 RUN mkdir /home/scripts
 COPY build-rat.sh /home/scripts
-
+COPY setup-env.sh /home/scripts
 COPY docker-entrypoint.sh /usr/local/bin/
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
