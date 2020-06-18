@@ -86,7 +86,12 @@ docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
 ```
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
-- Once in the container, you may see a message about how it could not find /rat/env.sh; this is expected as you have not built RAT yet. If the build is successful, you shouldn't see this message next time.
+- Once in the container, Singularity users need to run the following:
+```
+source /home/scripts/setup-env.sh
+```
+In Docker this is unnecessary as Docker sources it automatically on launch. You may see a message about how it could not find /rat/env.sh; this is expected as you
+have not built RAT yet. If the build is successful, you shouldn't see this message next time.
 
 - Finally, run this command to build RAT:
 ```
