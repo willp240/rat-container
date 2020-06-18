@@ -7,18 +7,9 @@ SHELL ["/bin/bash", "-c"]
 
 # Create place to copy scripts to
 RUN mkdir /home/scripts
-
-# Create the environment setup script and give it exec permissions
-RUN printf '#!/bin/bash\nsource /home/root-build/bin/thisroot.sh\nsource /home/geant4.10.00.p02/bin/geant4.sh\nexport RAT_SCONS=/home/scons-2.1.0\n' > /home/scripts/setup-env.sh
-RUN printf 'export TF_DIR=/usr/local\nexport CPPFLOW_DIR=/home/software/cppflow\n' >> /home/scripts/setup-env.sh
-RUN printf 'export LIBRARY_PATH=$LIBRARY_PATH:$TF_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$TF_DIR/lib\nexport LIBRARY_PATH=$LIBRARY_PATH:$CPPFLOW_DIR/lib\nexport LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CPPFLOW_DIR/lib\n' >> /home/scripts/setup-env.sh
-RUN printf 'if [ -f /rat/env.sh ]; then source /rat/env.sh; else printf "\nCould not find /rat/env.sh\nIf youre building RAT, please ignore.\nOtherwise, ensure RAT is mounted to /rat\n"; fi' >> /home/scripts/setup-env.sh
-RUN chmod +x /home/scripts/setup-env.sh
-
-# Create the build-rat script and give it exec permissions
-RUN printf '#!/bin/bash\necho "[ BUILDING RAT ]"\necho "Now checking to see if RAT was mounted correctly..."' > /home/scripts/build-rat.sh
-RUN printf '\nif [ -d /rat ]; then cd /rat && ./configure && chmod +x /rat/env.sh && source /rat/env.sh && scons; else echo "RAT was not mounted correctly, please ensure it was mounted to /rat."; fi' >> /home/scripts/build-rat.sh
-RUN chmod +x /home/scripts/build-rat.sh                                                                
+COPY build-rat.sh /home/scripts
+COPY setup-env.sh /home/scripts
+COPY docker-entrypoint.sh /usr/local/bin/
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
@@ -89,3 +80,6 @@ RUN mkdir /home/software && \
 
 # Cleanup the cache to make the image smaller
 RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
+
+# Set up the environment when entering the container
+ENTRYPOINT ["docker-entrypoint.sh"]
