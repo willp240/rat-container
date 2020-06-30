@@ -1,21 +1,9 @@
 FROM jamierajewski/rat-container:base-root6
 
-# Fetch and install ROOT 6.20.06 from source
-# Fetch
-RUN cd /home/software && wget https://root.cern/download/root_v6.20.06.source.tar.gz
-# Unzip and Compile
-RUN cd /home/software && tar zxvf root_v6.20.06.source.tar.gz && \
-    mkdir root && \
-    cd root && \
-    cmake -Dminuit2:BOOL=ON -Dpython:BOOL=ON -Dmathmore:BOOL=ON -Droofit:BOOL=ON \
-    -Dfortran:BOOL=OFF -Dfftw3:BOOL=ON -Dgsl_shared:BOOL=ON -Dgdml:BOOL=ON /home/software/root-6.20.06 && \
-    make -j4
-# Change permissions and cleanup
-RUN chmod +x /home//software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
-    rm -rf /home/software/root_v6.20.06.source.tar.gz /home/software/root-6.20.06
-
-# Cleanup the cache to make the image smaller
-RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
+RUN cd /home/software && \
+    wget https://root.cern/download/root_v6.20.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
+    tar xzfv root_v6.20.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
+    rm -rf root_v6.20.06.Linux-ubuntu20-x86_64-gcc9.3.tar.gz
 
 # Set up the environment when entering the container
 ENTRYPOINT ["docker-entrypoint.sh"]
