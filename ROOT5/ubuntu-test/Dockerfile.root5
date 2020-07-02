@@ -1,0 +1,9 @@
+FROM jamierajewski/rat-container:base-root5
+
+RUN cd /home/software && \
+    wget https://root.cern/download/root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz && \
+    tar xzfv root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz && \
+    rm -rf root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+
+# Set up the environment when entering the container
+ENTRYPOINT ["docker-entrypoint.sh"]

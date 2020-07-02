@@ -11,9 +11,11 @@ COPY build-rat.sh /home/scripts
 COPY setup-env.sh /home/scripts
 COPY docker-entrypoint.sh /usr/local/bin/
 
+RUN mkdir /home/software
+
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
-RUN yum install -y vim emacs valgrid gdb which wget git gcc-c++-4.8.5-39.el7.x86_64 gcc-gfortran python-devel \
+RUN yum install -y vim emacs valgrind gdb which wget git gcc-c++-4.8.5-39.el7.x86_64 gcc-gfortran python-devel \
     python-argparse uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel \
     libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel \
     libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html && \
@@ -21,19 +23,17 @@ RUN yum install -y vim emacs valgrid gdb which wget git gcc-c++-4.8.5-39.el7.x86
     rm -rf /var/cache/yum
 
 # Fetch and install ROOT 5.34.38 from source
-RUN cd /home && \
-    wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
-    tar zxvf root_v5.34.38.source.tar.gz && \
+RUN cd /home/software && wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz
+RUN cd /home/software && tar zxvf root_v5.34.38.source.tar.gz && \
     cd root && \
     ./configure --enable-minuit2 --enable-python --enable-mathmore && \
     make -j4 && \
-    chmod +x /home/root/bin/thisroot.sh && source /home/root/bin/thisroot.sh && \
-    rm -rf /home/root_v5.34.38.source.tar.gz
+    chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
+    rm -rf /home/software/root_v5.34.38.source.tar.gz
 
 # Fetch and install GEANT4 from source
-RUN cd /home && \
-    wget http://geant4.cern.ch/support/source/geant4.10.00.p02.tar.gz && \
-    mkdir geant4.10.00.p02-source && \
+RUN cd /home/software && wget http://geant4.cern.ch/support/source/geant4.10.00.p02.tar.gz
+RUN cd /home/software && mkdir geant4.10.00.p02-source && \
     tar -xvzf geant4.10.00.p02.tar.gz -C geant4.10.00.p02-source --strip-components 1 && \
     mkdir geant4.10.00.p02 && \
     mkdir geant4.10.00.p02-build && \
@@ -47,15 +47,19 @@ RUN cd /home && \
     rm -rf geant4.10.00.p02.tar.gz
 
 # Fetch and install scons
-RUN cd /home && \
-    wget http://downloads.sourceforge.net/project/scons/scons/2.1.0/scons-2.1.0.tar.gz && \
-    tar zxvf scons-2.1.0.tar.gz && \
-    chmod +x scons-2.1.0/script/scons && \
-    rm -rf scons-2.1.0.tar.gz
+# RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/2.1.0/scons-2.1.0.tar.gz
+# RUN cd /home/software && tar zxvf scons-2.1.0.tar.gz && \
+#     chmod +x scons-2.1.0/script/scons && \
+#     rm -rf scons-2.1.0.tar.gz
+
+# Fetch and install scons
+RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz
+RUN cd /home/software && tar zxvf scons-3.1.2.tar.gz && \
+    chmod +x scons-3.1.2/script/scons && \
+        rm -rf scons-3.1.2.tar.gz
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
-RUN mkdir /home/software && \
-    cd /home/software && \
+RUN cd /home/software && \
     wget -O tflow https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz && \
     tar -C /usr/local -xzf tflow && \
     export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib && \
