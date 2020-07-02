@@ -11,7 +11,7 @@ COPY build-rat.sh /home/scripts
 COPY setup-env.sh /home/scripts
 COPY docker-entrypoint.sh /usr/local/bin/
 
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN mkdir /home/software
 
@@ -19,10 +19,10 @@ RUN apt-get update && apt-get install -y gcc g++ gfortran libssl-dev libpcre3-de
     xlibmesa-glu-dev libglew1.5-dev libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev \
     graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev python-dev libxml2-dev libkrb5-dev \
     libgsl0-dev emacs wget git tar curl nano vim rsync strace valgrind make cmake \
-    libxpm-dev libxft-dev libcurl4-openssl-dev libbz2-dev
+    libxpm-dev libxft-dev libxext-dev libcurl4-openssl-dev libbz2-dev latex2html
 
 # Fetch and install scons
-RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz 
+RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz
 RUN cd /home/software && tar zxvf scons-3.1.2.tar.gz && \
     chmod +x scons-3.1.2/script/scons && \
     rm -rf scons-3.1.2.tar.gz
