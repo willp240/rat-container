@@ -47,12 +47,6 @@ RUN cd /home/software && mkdir geant4.10.00.p02-source && \
     rm -rf geant4.10.00.p02.tar.gz
 
 # Fetch and install scons
-# RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/2.1.0/scons-2.1.0.tar.gz
-# RUN cd /home/software && tar zxvf scons-2.1.0.tar.gz && \
-#     chmod +x scons-2.1.0/script/scons && \
-#     rm -rf scons-2.1.0.tar.gz
-
-# Fetch and install scons
 RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz
 RUN cd /home/software && tar zxvf scons-3.1.2.tar.gz && \
     chmod +x scons-3.1.2/script/scons && \
