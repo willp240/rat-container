@@ -7,6 +7,13 @@ Singularity and Docker recipes to build a SNO+ environment for RAT.
 
 For regular usage, simply download the pre-built container with the following instructions for your container platform of choice. For advanced users, see the build instructions below.
 
+***IF THE DOCKERHUB LINK STOPS WORKING, SOMEONE MAY HAVE TO BUILD AND REUPLOAD THE CONTAINER TO DOCKERHUB DUE TO A CHANGE IN THEIR POLICY***
+
+As of ***November 1, 2020*** Docker is implementing an inactive image removal policy, meaning in a free account (which is where this container is hosted) if the container is not ***updated or pulled for 6 consecutive months*** it will be ***deleted***. This isn't a huge issue, someone will just have to do the following:
+- Build the container manually from the image file in this repository according to the instructions below
+- Upload it to another Dockerhub repository
+- Update the download links that reference the Dockerhub location with the new location
+
 # FEATURES
 - Full RAT-compatible environment, including ROOT5, GEANT4 and scons
 - Can build any version of RAT
