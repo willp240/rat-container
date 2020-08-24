@@ -1,4 +1,4 @@
-FROM jamierajewski/rat-container:base-root6
+FROM jamierajewski/rat-container:base-root5
 
 # Install pip and Python libs
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
