@@ -15,7 +15,7 @@ As of ***November 1, 2020*** Docker is implementing an inactive image removal po
 - Update the download links that reference the Dockerhub location with the new location
 
 # FEATURES
-- Full RAT-compatible environment, including ROOT5, GEANT4 and scons
+- Full RAT-compatible environment, including ROOT5 (ROOT6 version now available), GEANT4 and scons
 - Can build any version of RAT
 - GUI output support on all operating systems
 - TensorFlow and CppFlow (CPU-only for the time being)
