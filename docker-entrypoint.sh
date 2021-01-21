@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source /home/software/root/bin/thisroot.sh
-source /home/software/geant4.10.00.p02/bin/geant4.sh
+source /home/software/geant4.10.00.p04/bin/geant4.sh
 
 export RAT_SCONS=/home/software/scons-3.1.2
 export TF_DIR=/usr/local

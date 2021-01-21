@@ -15,36 +15,33 @@ RUN mkdir /home/software
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
-RUN yum install -y vim emacs valgrind gdb which wget git gcc-c++-4.8.5-39.el7.x86_64 gcc-gfortran python-devel \
-    python-argparse uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel \
-    libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel \
+RUN yum group install -y "Development Tools"
+RUN yum install -y vim emacs valgrind gdb which wget git python-devel \
+    python-argparse uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel openssl \
+    libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel \
     libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html postgresql-devel && \
     yum clean all && \
     rm -rf /var/cache/yum
 
-# Fetch and install ROOT 5.34.38 from source
-RUN cd /home/software && wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz
-RUN cd /home/software && tar zxvf root_v5.34.38.source.tar.gz && \
-    cd root && \
-    ./configure --enable-minuit2 --enable-python --enable-mathmore && \
-    make -j4 && \
-    chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
-    rm -rf /home/software/root_v5.34.38.source.tar.gz
+RUN cd /home/software && \
+    wget https://root.cern/download/root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz && \
+    tar xzfv root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz && \
+    rm -rf root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
 
 # Fetch and install GEANT4 from source
-RUN cd /home/software && wget http://geant4.cern.ch/support/source/geant4.10.00.p02.tar.gz
-RUN cd /home/software && mkdir geant4.10.00.p02-source && \
-    tar -xvzf geant4.10.00.p02.tar.gz -C geant4.10.00.p02-source --strip-components 1 && \
-    mkdir geant4.10.00.p02 && \
-    mkdir geant4.10.00.p02-build && \
-    cd geant4.10.00.p02-build && \
-    cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p02 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p02-source && \
-    make ../geant4.10.00.p02 && \
-    make install ../geant4.10.00.p02 && \
+RUN cd /home/software && wget http://cern.ch/geant4-data/releases/geant4.10.00.p04.tar.gz
+RUN cd /home/software && mkdir geant4.10.00.p04-source && \
+    tar -xvzf geant4.10.00.p04.tar.gz -C geant4.10.00.p04-source --strip-components 1 && \
+    mkdir geant4.10.00.p04 && \
+    mkdir geant4.10.00.p04-build && \
+    cd geant4.10.00.p04-build && \
+    cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p04 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p04-source && \
+    make ../geant4.10.00.p04 && \
+    make install ../geant4.10.00.p04 && \
     cd .. && \
-    rm -rf geant4.10.00.p02-source && \
-    rm -rf geant4.10.00.p02-build && \
-    rm -rf geant4.10.00.p02.tar.gz
+    rm -rf geant4.10.00.p04-source && \
+    rm -rf geant4.10.00.p04-build && \
+    rm -rf geant4.10.00.p04.tar.gz
 
 # Fetch and install scons
 RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz
