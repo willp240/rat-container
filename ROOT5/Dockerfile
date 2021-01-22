@@ -23,10 +23,16 @@ RUN yum install -y vim emacs valgrind gdb which wget git python-devel \
     yum clean all && \
     rm -rf /var/cache/yum
 
+# Compile ROOT from source. Necessary for CentOS-based version
 RUN cd /home/software && \
-    wget https://root.cern/download/root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz && \
-    tar xzfv root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz && \
-    rm -rf root_v5.34.38.Linux-ubuntu14-x86_64-gcc4.8.tar.gz
+    wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
+    tar zxvf root_v5.34.38.source.tar.gz && \
+    cd root && \
+    ./configure --enable-minuit2 --enable-python --enable-mathmore && \
+    make -j4 && \
+    chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
+    rm -rf /home/software/root_v5.34.38.source.tar.gz
+
 
 # Fetch and install GEANT4 from source
 RUN cd /home/software && wget http://cern.ch/geant4-data/releases/geant4.10.00.p04.tar.gz
