@@ -89,7 +89,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+docker run -ti --init --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
 ```
 *Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
@@ -97,8 +97,7 @@ docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
 ```
 source /home/scripts/setup-env.sh
 ```
-In Docker this is unnecessary as Docker sources it automatically on launch. You may see a message about how it could not find /rat/env.sh; this is expected as you
-have not built RAT yet. If the build is successful, you shouldn't see this message next time.
+In **Docker** this is **unnecessary** as Docker sources it automatically on launch. You may see a message about how it could not find /rat/env.sh; this is expected as you have not built RAT yet. If the build is successful, you shouldn't see this message next time.
 
 - Finally, run this command to build RAT:
 ```
@@ -124,7 +123,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+docker run -ti --init --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
 ```
 - RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other 
 directories, additional bind mounts are necessary (see below).
@@ -139,7 +138,7 @@ directories, additional bind mounts are necessary (see below).
   
   For **Linux**:
   ```
-  docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+  docker run -ti --init --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container
   ```
   As you can see, the difference is a few extra options. As the command has gotten so large, you can [set an alias in your .bashrc](https://askubuntu.com/a/17538) to something much shorter and more convenient.
   
@@ -153,7 +152,7 @@ directories, additional bind mounts are necessary (see below).
   2. When Windows prompts you to allow it in the firewall, do so.
   3. Finally, restart Xming and now run the following command in Powershell or WSL2:
   ```
-  docker run --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+  docker run --init --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container
   ```
 
   For **macOS**:
@@ -163,7 +162,7 @@ directories, additional bind mounts are necessary (see below).
   3. Run `xhost + 127.0.0.1` which will whitelist your local IP
   4. Finally, you can run the container with the following:
   ```
-  docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 jamierajewski/rat-container
+  docker run --rm --init -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 jamierajewski/rat-container
   ```
 
 ***
@@ -181,7 +180,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti -v "$(pwd)"/rat:/rat jamierajewski/rat-container
+docker run -ti --init -v "$(pwd)"/rat:/rat jamierajewski/rat-container
 ```
 - Navigate to the RAT directory:
 ```
@@ -203,7 +202,7 @@ singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container
+docker run --init --rm -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container
 ```
 - Now in the container, you have access to /other/path at /stuff
 
