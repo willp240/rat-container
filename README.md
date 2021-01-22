@@ -141,8 +141,7 @@ directories, additional bind mounts are necessary (see below).
   ```
   docker run -ti --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container
   ```
-  As you can see, the difference is a few extra options. This command is getting a bit out of control to
-  each time, so feel free to [set an alias in your .bashrc](https://askubuntu.com/a/17538).
+  As you can see, the difference is a few extra options. As the command has gotten so large, you can [set an alias in your .bashrc](https://askubuntu.com/a/17538) to something much shorter and more convenient.
   
   For **Windows 10**:
   
