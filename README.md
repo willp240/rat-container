@@ -217,14 +217,29 @@ docker run --init --rm -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff j
 
 # [ADVANCED]
 # To build the container
-To build, you must have **root permissions** and **Singularity or Docker installed on your machine** (the image can be 
-moved to a cluster once it has been built). Install Singularity manually, or do `sudo apt-get install singularity-container` on debian-based systems (like Ubuntu) to get an older but capable Singularity.
+To build, you must have **root permissions** and **Docker installed on your machine**. Docker installation instructions can be found [here](https://docs.docker.com/get-docker/) for each OS.
 
-Download the `Singularity` recipe file, and run the following command, which will produce a container file 
-called `rat-container.sif`:
+To rebuild the container:
+
+1. Clone this repository
+2. Navigate into either `/ROOT5` or `/ROOT6` depending on which you would like to build off of
+3. Edit `Dockerfile`, which is the recipe on what you would like to put into your container
+4. Once you are happy with your changes, navigate back to the root of the repository and run:
 ```
-sudo singularity build rat-container.sif Singularity
+docker build -t YOUR_CONTAINER_TAG -f ROOT5/Dockerfile .
 ```
+where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `ROOT5` to `ROOT6` if using that version
+
+5. This will build your container with your tag name, which you can then use in the same way as in the above guide, but instead of
+```
+docker run ... jamierajewski/rat-container
+```
+you will now run:
+```
+docker run ... YOUR_TAG_NAME
+```
+
+6. [OPTIONAL] If you would like to share or back up your container image, you can push it to Dockerhub. You can follow [the official documentation](https://docs.docker.com/docker-hub/repos/#pushing-a-docker-container-image-to-docker-hub) to learn how
 
 ***
 # To run multiple RAT instances
