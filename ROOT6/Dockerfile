@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y gcc g++ gfortran libssl-dev libpcre3-de
     xlibmesa-glu-dev libglew1.5-dev libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev \
     graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev python-dev libxml2-dev libkrb5-dev \
     libgsl0-dev emacs wget git tar curl nano vim rsync strace valgrind make cmake \
-    libxpm-dev libxft-dev libxext-dev libcurl4-openssl-dev libbz2-dev latex2html
+    libxpm-dev libxft-dev libxext-dev libcurl4-openssl-dev libbz2-dev latex2html python3-pip
 
 RUN cd /home/software && \
     wget https://root.cern/download/root_v6.22.02.Linux-ubuntu20-x86_64-gcc9.3.tar.gz && \
@@ -30,10 +30,10 @@ RUN cd /home/software && \
 RUN apt-get clean -y
 
 # Install pip and Python libs
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-    python get-pip.py && \
-    rm -f get-pip.py && \
-    python -m pip install ipython numpy scipy
+# RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+#     python3 get-pip.py && \
+#     rm -f get-pip.py && \
+RUN python3 -m pip install ipython numpy scipy
 
 # Fetch and install scons
 RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz
