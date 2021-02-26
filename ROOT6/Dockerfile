@@ -43,19 +43,19 @@ RUN cd /home/software && tar zxvf scons-3.1.2.tar.gz && \
 
 # Install GEANT4
 # New GEANT4 source installation
-RUN cd /home/software && wget http://cern.ch/geant4-data/releases/geant4.10.00.p02.tar.gz
-RUN cd /home/software && mkdir geant4.10.00.p02-source && \
-    tar -xvzf geant4.10.00.p02.tar.gz -C geant4.10.00.p02-source --strip-components 1 && \
-    mkdir geant4.10.00.p02 && \
-    mkdir geant4.10.00.p02-build && \
-    cd geant4.10.00.p02-build && \
-    cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p02 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p02-source && \
-    make ../geant4.10.00.p02 && \
-    make install ../geant4.10.00.p02 && \
+RUN cd /home/software && wget http://cern.ch/geant4-data/releases/geant4.10.00.p04.tar.gz
+RUN cd /home/software && mkdir geant4.10.00.p04-source && \
+    tar -xvzf geant4.10.00.p04.tar.gz -C geant4.10.00.p04-source --strip-components 1 && \
+    mkdir geant4.10.00.p04 && \
+    mkdir geant4.10.00.p04-build && \
+    cd geant4.10.00.p04-build && \
+    cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p04 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p04-source && \
+    make ../geant4.10.00.p04 && \
+    make install ../geant4.10.00.p04 && \
     cd .. && \
-    rm -rf geant4.10.00.p02-source && \
-    rm -rf geant4.10.00.p02-build && \
-    rm -rf geant4.10.00.p02.tar.gz
+    rm -rf geant4.10.00.p04-source && \
+    rm -rf geant4.10.00.p04-build && \
+    rm -rf geant4.10.00.p04.tar.gz
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
 RUN cd /home/software && \
