@@ -23,6 +23,10 @@ RUN yum install -y vim emacs valgrind gdb which wget git python-devel \
     yum clean all && \
     rm -rf /var/cache/yum
 
+# Install python packages
+RUN python2 -m pip install psycopg2-binary requests sympy mpmath six redis pytz python-dateutil \
+    CouchDB MySQL-python SQLAlchemy
+
 # Compile ROOT from source. Necessary for CentOS-based version
 RUN cd /home/software && \
     wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
@@ -67,6 +71,8 @@ RUN cd /home/software && \
     git checkout ML-fitter && \
     mkdir lib && \
     make
+
+RUN python2 -m pip install psycopg2-binary
 
 # Cleanup the cache to make the image smaller
 RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
