@@ -44,8 +44,8 @@ Docker, instructions for each platform can be found [here.](https://docs.docker.
 
 4. As the DIRAC system no longer supports SL6, there is no longer a need to maintain an SL6 version when pushing new RAT releases to cvmfs. Therefore, the only image offered here is based on SL7.
 
-5. To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
-instructions below.
+5. **To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
+instructions below.**
 
 # New Video Tutorial (slightly outdated - no longer necessary to source the setup-env.sh on startup)
 - [Available here (Requires SNO+ DocDB access)](https://www.snolab.ca/snoplus/private/DocDB/0062/006281/001/RAT%20container%20tutorial.mp4)
@@ -54,7 +54,7 @@ instructions below.
 **If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
 version of the container:
 ```
-singularity pull --name rat-container.sif docker://jamierajewski/rat-container:latest
+singularity pull --name rat-container.sif docker://jamierajewski/rat-container:root5
 ```
 Ensure that the Singularity version you are using is **&ge;3.2**
 
