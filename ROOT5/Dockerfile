@@ -16,34 +16,28 @@ RUN mkdir /home/software
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
 RUN yum group install -y "Development Tools"
-RUN yum install -y vim emacs valgrind gdb which wget git python-devel \
-    python-argparse uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel openssl \
+RUN yum install -y vim emacs valgrind gdb which wget git \
+    uuid-devel tar fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel openssl \
     libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel \
-    libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html postgresql-devel && \
-    yum clean all && \
-    rm -rf /var/cache/yum
+    libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html postgresql-devel \
+    scl-utils scl-utils-build yum-conf-repos
+RUN yum install -y yum-conf-softwarecollections
+RUN yum update -y
 
 # Install python packages
-RUN python2 -m pip install psycopg2-binary requests sympy mpmath six redis pytz python-dateutil \
-    CouchDB MySQL-python SQLAlchemy
-
-# Compile ROOT from source. Necessary for CentOS-based version
-RUN cd /home/software && \
-    wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
-    tar zxvf root_v5.34.38.source.tar.gz && \
-    cd root && \
-    ./configure --enable-minuit2 --enable-python --enable-mathmore && \
-    make -j4 && \
-    chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
-    rm -rf /home/software/root_v5.34.38.source.tar.gz
-
+RUN yum install -y python27
+RUN source /opt/rh/python27/enable && \
+    python2 -m pip install --upgrade --no-cache-dir pip==20.3.4 && \
+    python2 -m pip install --upgrade --no-cache-dir setuptools && \
+    python2 -m pip install --no-cache-dir requests pytz python-dateutil \
+    numpy sympy matplotlib six redis \
+    psycopg2-binary CouchDB SQLAlchemy
 
 # Fetch and install GEANT4 from source
-RUN cd /home/software && wget http://cern.ch/geant4-data/releases/geant4.10.00.p04.tar.gz
-RUN cd /home/software && mkdir geant4.10.00.p04-source && \
-    tar -xvzf geant4.10.00.p04.tar.gz -C geant4.10.00.p04-source --strip-components 1 && \
-    mkdir geant4.10.00.p04 && \
-    mkdir geant4.10.00.p04-build && \
+RUN cd /home/software && \
+    wget https://cern.ch/geant4-data/releases/geant4.10.00.p04.tar.gz && \
+    mkdir geant4.10.00.p04-source && mkdir geant4.10.00.p04 && mkdir geant4.10.00.p04-build && \
+    tar zxvf geant4.10.00.p04.tar.gz -C geant4.10.00.p04-source --strip-components 1 && \
     cd geant4.10.00.p04-build && \
     cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p04 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p04-source && \
     make ../geant4.10.00.p04 && \
@@ -53,11 +47,14 @@ RUN cd /home/software && mkdir geant4.10.00.p04-source && \
     rm -rf geant4.10.00.p04-build && \
     rm -rf geant4.10.00.p04.tar.gz
 
-# Fetch and install scons
-RUN cd /home/software && wget http://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz
-RUN cd /home/software && tar zxvf scons-3.1.2.tar.gz && \
-    chmod +x scons-3.1.2/script/scons && \
-        rm -rf scons-3.1.2.tar.gz
+# Fetch and install SCons
+RUN cd /home/software && \
+    wget https://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz && \
+    tar zxvf scons-3.1.2.tar.gz && \
+    cd scons-3.1.2 && \
+    source /opt/rh/python27/enable && python2 setup.py install && \
+    cd .. && \
+    rm -rf scons-3.1.2.tar.gz && rm -rf scons-3.1.2
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
 RUN cd /home/software && \
@@ -72,7 +69,16 @@ RUN cd /home/software && \
     mkdir lib && \
     make
 
-RUN python2 -m pip install psycopg2-binary
+# Compile ROOT 5 from source
+RUN cd /home/software && \
+    wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
+    tar zxvf root_v5.34.38.source.tar.gz && \
+    cd root && \
+    ./configure --enable-minuit2 --enable-python --enable-mathmore --enable-cxx11 && \
+    make -j4 && \
+    chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
+    cd .. && \
+    rm -rf root_v5.34.38.source.tar.gz
 
 # Cleanup the cache to make the image smaller
 RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
