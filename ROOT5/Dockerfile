@@ -7,9 +7,9 @@ SHELL ["/bin/bash", "-c"]
 
 # Create place to copy scripts to
 RUN mkdir /home/scripts
-COPY build-rat.sh /home/scripts
-COPY setup-env.sh /home/scripts
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY scripts/build-rat.sh /home/scripts
+COPY scripts/setup-env.sh /home/scripts
+COPY scripts/docker-entrypoint.sh /usr/local/bin/
 
 ARG SOFTWAREDIR=/home/software
 RUN mkdir -p $SOFTWAREDIR
