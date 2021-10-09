@@ -11,7 +11,8 @@ COPY build-rat.sh /home/scripts
 COPY setup-env.sh /home/scripts
 COPY docker-entrypoint.sh /usr/local/bin/
 
-RUN mkdir /home/software
+ARG SOFTWAREDIR=/home/software
+RUN mkdir $SOFTWAREDIR
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
@@ -34,13 +35,13 @@ RUN source /opt/rh/python27/enable && \
     psycopg2-binary CouchDB SQLAlchemy
 
 # Fetch and install GEANT4 from source
-RUN cd /home/software && \
+RUN cd $SOFTWAREDIR && \
     wget https://cern.ch/geant4-data/releases/geant4.10.00.p04.tar.gz && \
     mkdir geant4.10.00.p04-source && mkdir geant4.10.00.p04 && mkdir geant4.10.00.p04-build && \
     tar zxvf geant4.10.00.p04.tar.gz -C geant4.10.00.p04-source --strip-components 1 && \
     cd geant4.10.00.p04-build && \
     cmake -DCMAKE_INSTALL_PREFIX=../geant4.10.00.p04 -DGEANT4_INSTALL_DATA=ON ../geant4.10.00.p04-source && \
-    make ../geant4.10.00.p04 && \
+    make -j4 ../geant4.10.00.p04 && \
     make install ../geant4.10.00.p04 && \
     cd .. && \
     rm -rf geant4.10.00.p04-source && \
@@ -48,16 +49,17 @@ RUN cd /home/software && \
     rm -rf geant4.10.00.p04.tar.gz
 
 # Fetch and install SCons
-RUN cd /home/software && \
-    wget https://downloads.sourceforge.net/project/scons/scons/3.1.2/scons-3.1.2.tar.gz && \
-    tar zxvf scons-3.1.2.tar.gz && \
-    cd scons-3.1.2 && \
+ARG SCONS_VERSION=3.1.2
+RUN cd $SOFTWAREDIR && \
+    wget https://downloads.sourceforge.net/project/scons/scons/$SCONS_VERSION/scons-$SCONS_VERSION.tar.gz && \
+    tar zxvf scons-$SCONS_VERSION.tar.gz && \
+    cd scons-$SCONS_VERSION && \
     source /opt/rh/python27/enable && python2 setup.py install && \
     cd .. && \
-    rm -rf scons-3.1.2.tar.gz && rm -rf scons-3.1.2
+    rm -rf scons-$SCONS_VERSION.tar.gz && rm -rf scons-$SCONS_VERSION
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
-RUN cd /home/software && \
+RUN cd $SOFTWAREDIR && \
     wget -O tflow https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz && \
     tar -C /usr/local -xzf tflow && \
     export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib && \
@@ -70,15 +72,16 @@ RUN cd /home/software && \
     make
 
 # Compile ROOT 5 from source
-RUN cd /home/software && \
-    wget https://root.cern.ch/download/root_v5.34.38.source.tar.gz && \
-    tar zxvf root_v5.34.38.source.tar.gz && \
+ARG ROOT_VERSION=5.34.38
+RUN cd $SOFTWAREDIR && \
+    wget https://root.cern.ch/download/root_v$ROOT_VERSION.source.tar.gz && \
+    tar zxvf root_v$ROOT_VERSION.source.tar.gz && \
     cd root && \
     ./configure --enable-minuit2 --enable-python --enable-mathmore --enable-cxx11 && \
     make -j4 && \
     chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
     cd .. && \
-    rm -rf root_v5.34.38.source.tar.gz
+    rm -rf root_v$ROOT_VERSION.source.tar.gz
 
 # Cleanup the cache to make the image smaller
 RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
