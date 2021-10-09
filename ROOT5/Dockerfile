@@ -1,6 +1,6 @@
 FROM scientificlinux/sl:7
 
-LABEL maintainer="Jamie Rajewski <jrajewsk@ualberta.ca>"
+LABEL maintainer="Mark Anderson <anderson.mark@queensu.ca>"
 
 # Switch default shell to bash
 SHELL ["/bin/bash", "-c"]
@@ -25,7 +25,7 @@ RUN yum install -y vim emacs valgrind gdb which wget git tar \
 RUN yum install -y yum-conf-softwarecollections
 RUN yum update -y
 
-# Install python packages
+# Install Python packages
 RUN yum install -y python27
 RUN source /opt/rh/python27/enable && \
     python2 -m pip install --upgrade --no-cache-dir pip==20.3.4 && \
@@ -36,8 +36,8 @@ RUN source /opt/rh/python27/enable && \
 
 # Fetch and install SCons
 ARG SCONS_VERSION=3.1.2
-RUN cd $SOFTWAREDIR && \
-    source /opt/rh/python27/enable && \
+WORKDIR $SOFTWAREDIR
+RUN source /opt/rh/python27/enable && \
     wget https://downloads.sourceforge.net/project/scons/scons/$SCONS_VERSION/scons-$SCONS_VERSION.tar.gz && \
     tar zxvf scons-$SCONS_VERSION.tar.gz && \
     cd scons-$SCONS_VERSION && \
@@ -46,8 +46,8 @@ RUN cd $SOFTWAREDIR && \
     rm -rf scons-$SCONS_VERSION.tar.gz && rm -rf scons-$SCONS_VERSION
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
-RUN cd $SOFTWAREDIR && \
-    wget -O tflow https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz && \
+WORKDIR $SOFTWAREDIR
+RUN wget -O tflow https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz && \
     tar -C /usr/local -xzf tflow && \
     export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lib && \
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib && \
@@ -60,8 +60,8 @@ RUN cd $SOFTWAREDIR && \
 
 # Fetch and install GEANT4 from source
 ARG GEANT4_VERSION=4.10.00.p04
-RUN cd $SOFTWAREDIR && \
-    wget https://cern.ch/geant4-data/releases/geant$GEANT4_VERSION.tar.gz && \
+WORKDIR $SOFTWAREDIR
+RUN wget https://cern.ch/geant4-data/releases/geant$GEANT4_VERSION.tar.gz && \
     mkdir geant$GEANT4_VERSION && mkdir geant$GEANT4_VERSION-source && mkdir geant$GEANT4_VERSION-build && \
     tar zxvf geant$GEANT4_VERSION.tar.gz -C geant$GEANT4_VERSION-source --strip-components 1 && \
     cd geant$GEANT4_VERSION-build && \
@@ -77,8 +77,8 @@ RUN cd $SOFTWAREDIR && \
 
 # Compile ROOT 5 from source
 ARG ROOT_VERSION=5.34.38
-RUN cd $SOFTWAREDIR && \
-    source /opt/rh/python27/enable && \
+WORKDIR $SOFTWAREDIR
+RUN source /opt/rh/python27/enable && \
     wget https://root.cern.ch/download/root_v$ROOT_VERSION.source.tar.gz && \
     tar zxvf root_v$ROOT_VERSION.source.tar.gz && \
     cd root && \
@@ -91,4 +91,5 @@ RUN cd $SOFTWAREDIR && \
 RUN yum -y clean all && rm -rf /var/cache/yum
 
 # Set up the environment when entering the container
+WORKDIR /home
 ENTRYPOINT ["docker-entrypoint.sh"]
