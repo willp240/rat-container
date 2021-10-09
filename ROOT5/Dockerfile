@@ -51,10 +51,11 @@ RUN cd $SOFTWAREDIR && \
 # Fetch and install SCons
 ARG SCONS_VERSION=3.1.2
 RUN cd $SOFTWAREDIR && \
+    source /opt/rh/python27/enable && \
     wget https://downloads.sourceforge.net/project/scons/scons/$SCONS_VERSION/scons-$SCONS_VERSION.tar.gz && \
     tar zxvf scons-$SCONS_VERSION.tar.gz && \
     cd scons-$SCONS_VERSION && \
-    source /opt/rh/python27/enable && python2 setup.py install && \
+    python2 setup.py install && \
     cd .. && \
     rm -rf scons-$SCONS_VERSION.tar.gz && rm -rf scons-$SCONS_VERSION
 
@@ -74,10 +75,11 @@ RUN cd $SOFTWAREDIR && \
 # Compile ROOT 5 from source
 ARG ROOT_VERSION=5.34.38
 RUN cd $SOFTWAREDIR && \
+    source /opt/rh/python27/enable && \
     wget https://root.cern.ch/download/root_v$ROOT_VERSION.source.tar.gz && \
     tar zxvf root_v$ROOT_VERSION.source.tar.gz && \
     cd root && \
-    ./configure --enable-minuit2 --enable-python --enable-mathmore --enable-cxx11 && \
+    ./configure --enable-minuit2 --enable-python --enable-mathmore --enable-roofit --enable-cxx11 && \
     make -j4 && \
     chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
     cd .. && \
