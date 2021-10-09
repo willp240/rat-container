@@ -34,23 +34,6 @@ RUN source /opt/rh/python27/enable && \
     numpy sympy matplotlib six redis \
     psycopg2-binary CouchDB SQLAlchemy
 
-# Fetch and install GEANT4 from source
-ARG GEANT4_VERSION=4.10.00.p04
-RUN cd $SOFTWAREDIR && \
-    wget https://cern.ch/geant4-data/releases/geant$GEANT4_VERSION.tar.gz && \
-    mkdir geant$GEANT4_VERSION && mkdir geant$GEANT4_VERSION-source && mkdir geant$GEANT4_VERSION-build && \
-    tar zxvf geant$GEANT4_VERSION.tar.gz -C geant$GEANT4_VERSION-source --strip-components 1 && \
-    cd geant$GEANT4_VERSION-build && \
-    cmake -DCMAKE_INSTALL_PREFIX=../geant$GEANT4_VERSION \
-    -DGEANT4_INSTALL_DATA=ON \
-    -DGEANT4_BUILD_CXXSTD=c++11 \
-    ../geant$GEANT4_VERSION-source && \
-    make -j4 && make install && \
-    cd .. && \
-    rm -rf geant$GEANT4_VERSION-source && \
-    rm -rf geant$GEANT4_VERSION-build && \
-    rm -rf geant$GEANT4_VERSION.tar.gz
-
 # Fetch and install SCons
 ARG SCONS_VERSION=3.1.2
 RUN cd $SOFTWAREDIR && \
@@ -74,6 +57,23 @@ RUN cd $SOFTWAREDIR && \
     git checkout ML-fitter && \
     mkdir lib && \
     make
+
+# Fetch and install GEANT4 from source
+ARG GEANT4_VERSION=4.10.00.p04
+RUN cd $SOFTWAREDIR && \
+    wget https://cern.ch/geant4-data/releases/geant$GEANT4_VERSION.tar.gz && \
+    mkdir geant$GEANT4_VERSION && mkdir geant$GEANT4_VERSION-source && mkdir geant$GEANT4_VERSION-build && \
+    tar zxvf geant$GEANT4_VERSION.tar.gz -C geant$GEANT4_VERSION-source --strip-components 1 && \
+    cd geant$GEANT4_VERSION-build && \
+    cmake -DCMAKE_INSTALL_PREFIX=../geant$GEANT4_VERSION \
+    -DGEANT4_INSTALL_DATA=ON \
+    -DGEANT4_BUILD_CXXSTD=c++11 \
+    ../geant$GEANT4_VERSION-source && \
+    make -j4 && make install && \
+    cd .. && \
+    rm -rf geant$GEANT4_VERSION-source && \
+    rm -rf geant$GEANT4_VERSION-build && \
+    rm -rf geant$GEANT4_VERSION.tar.gz
 
 # Compile ROOT 5 from source
 ARG ROOT_VERSION=5.34.38
