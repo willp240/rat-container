@@ -12,7 +12,7 @@ COPY setup-env.sh /home/scripts
 COPY docker-entrypoint.sh /usr/local/bin/
 
 ARG SOFTWAREDIR=/home/software
-RUN mkdir $SOFTWAREDIR
+RUN mkdir -p $SOFTWAREDIR
 
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
@@ -84,12 +84,11 @@ RUN cd $SOFTWAREDIR && \
     cd root && \
     ./configure --enable-minuit2 --enable-python --enable-mathmore --enable-roofit --enable-cxx11 && \
     make -j4 && \
-    chmod +x /home/software/root/bin/thisroot.sh && source /home/software/root/bin/thisroot.sh && \
     cd .. && \
     rm -rf root_v$ROOT_VERSION.source.tar.gz
 
 # Cleanup the cache to make the image smaller
-RUN cd /home && yum -y clean all && rm -rf /var/cache/yum
+RUN yum -y clean all && rm -rf /var/cache/yum
 
 # Set up the environment when entering the container
 ENTRYPOINT ["docker-entrypoint.sh"]
