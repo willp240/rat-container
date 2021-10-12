@@ -1,6 +1,6 @@
 # rat-container
 
-[![https://img.shields.io/badge/hosted-dockerhub-blue](https://img.shields.io/badge/hosted-dockerhub-blue)](https://hub.docker.com/r/jamierajewski/rat-container)
+[![https://img.shields.io/badge/hosted-dockerhub-blue](https://img.shields.io/badge/hosted-dockerhub-blue)](https://hub.docker.com/r/snoplus/rat-container)
 
 
 Singularity and Docker recipes to build a SNO+ environment for RAT.
@@ -28,13 +28,13 @@ image is not always up-to-date with the repo version. This has been [identified 
 # [PLEASE READ]
 
 1. Singularity and Docker are similar tools but operate slightly differently. Singularity acts more like an overlay, where
-you have access to your filesystem as you would **outside** the container (with the same rights as you'd have outside), 
-whereas Docker provides you with an isolated virtual filesystem (meaning you **can't** access your files from outside 
-the container). In summary, it is best to **mount** whatever directories you may need when running the container, whether 
-in Docker or Singularity (see the section "**To write/execute files from directories outside of RAT/launch 
+you have access to your filesystem as you would **outside** the container (with the same rights as you'd have outside),
+whereas Docker provides you with an isolated virtual filesystem (meaning you **can't** access your files from outside
+the container). In summary, it is best to **mount** whatever directories you may need when running the container, whether
+in Docker or Singularity (see the section "**To write/execute files from directories outside of RAT/launch
 directory**" below).
 
-2. Regardless of whether you download or build the container, you can use and develop RAT as you see fit as it is external 
+2. Regardless of whether you download or build the container, you can use and develop RAT as you see fit as it is external
 to the container.
 
 3. Instructions to install Singularity can be found [here.](https://github.com/sylabs/singularity/blob/master/INSTALL.md) For
@@ -51,11 +51,13 @@ instructions below.**
 - [Available here (Requires SNO+ DocDB access)](https://www.snolab.ca/snoplus/private/DocDB/0062/006281/001/RAT%20container%20tutorial.mp4)
 
 # To download the pre-built container
-**If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest 
+**If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest
 version of the container:
 ```
-singularity pull --name rat-container.sif docker://jamierajewski/rat-container:root5
+singularity pull --name rat-container.sif docker://snoplus/rat-container:root5
 ```
+The tag (in the above command, `root5`) can be replaced with the desired tag.
+
 Ensure that the Singularity version you are using is **&ge;3.2**
 
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. There is a version of
@@ -63,25 +65,27 @@ the image located at `/cvmfs/snoplus.egi.eu/sl7/sw/containers/rat-container.sif`
 the latest version (this shouldn't matter if you are simply building/running RAT).
 
 ***
-**If on your own local machine**, Docker should be used as it is easier to install. 
+**If on your own local machine**, Docker should be used as it is easier to install.
 The command to obtain the latest version of the container for Docker is:
 ```
-docker pull jamierajewski/rat-container:latest
+docker pull snoplus/rat-container:root5
 ```
-Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it 
+The tag (in the above command, `root5`) can be replaced with the desired tag.
+
+Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it
 downloads the image layers and adds an entry to your local **Docker registry** which can be viewed by going:
 ```
 docker images
 ```
-This difference doesn't have an effect on how it is actually used though.
+This difference doesn't have an effect on how the container is actually used.
 
 # Instructions on how to use the container with RAT
 
 **To build RAT for the first time**:
 - Clone RAT from GitHub (**NOTE** - If on Windows, make sure you run `git config --global core.autocrlf input` prior to
   cloning or else Git will automatically change the Unix line-endings to Windows (which **will break the next steps**)
-- Enter the following command, filling in the path to RAT with your own. This will mount your RAT repo to the directory 
-/rat inside the container:
+- Enter the following command, filling in the path to RAT with your own.
+  This will mount your RAT repo to the directory `/rat` inside the container:
 
 For *Singularity*:
 ```
@@ -89,20 +93,22 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --init --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
 ```
-*Note* - the -v flag operates the same as -B in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
+*Note* - the `-v` flag operates the same as `-B` in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
 
 - Once in the container, Singularity users need to run the following:
 ```
 source /home/scripts/setup-env.sh
 ```
-In **Docker** this is **unnecessary** as Docker sources it automatically on launch. You may see a message about how it could not find /rat/env.sh; this is expected as you have not built RAT yet. If the build is successful, you shouldn't see this message next time.
+In **Docker** this is **unnecessary** as Docker sources it automatically on launch. You may see a message about how it could not find `/rat/env.sh`; this is expected as you have not built RAT yet. If the build is successful, you shouldn't see this message next time.
 
 - Finally, run this command to build RAT:
 ```
 source /home/scripts/build-rat.sh
 ```
+Alternatively, `scons` can manually be called while in the `/rat` folder.
+
 - RAT is now ready to use! Look at the instructions below for how to run it
 
 ***
@@ -116,16 +122,16 @@ exit
 
 - First, get a shell into the container with your RAT bound into it:
 (It is **important** to **mount your rat directory to /rat** as the build scripts look there for it!)
-  
+
 For *Singularity*:
 ```
 singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --init --rm -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
 ```
-- RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other 
+- RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other
 directories, additional bind mounts are necessary (see below).
 
 ***
@@ -135,34 +141,34 @@ directories, additional bind mounts are necessary (see below).
 - The process is different on each OS but I will outline steps here to make it work on each. Note that these instructions
   assume that since you are on your own machine, you are using **Docker**. Singularity may work with graphics as it is, but
   these Docker solutions are the only ones that are tested and confirmed to be working.
-  
+
   For **Linux**:
   ```
-  docker run -ti --init --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+  docker run -ti --init --rm --user $(id -u) -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat snoplus/rat-container
   ```
   As you can see, the difference is a few extra options. As the command has gotten so large, you can [set an alias in your .bashrc](https://askubuntu.com/a/17538) to something much shorter and more convenient.
-  
+
   For **Windows 10**:
-  
+
   As of the new May 2020 Windows update, the Windows Subsystem for Linux (WSL) version 2 is out. Docker desktop can be
   configured to use this which is the recommended way to run Docker on Windows. Ensure WSL2 is enabled in the Docker Desktop
   settings, then follow these instructions:
-  
+
   1. Download and install [Xming](https://sourceforge.net/projects/xming/)
   2. When Windows prompts you to allow it in the firewall, do so.
   3. Finally, restart Xming and now run the following command in Powershell or WSL2:
   ```
-  docker run --init --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat jamierajewski/rat-container
+  docker run --init --rm -ti -e DISPLAY=host.docker.internal:0 -v /absolute/path/to/rat:/rat snoplus/rat-container
   ```
 
   For **macOS**:
-  
+
   1. Install [XQuartz](https://www.xquartz.org/)
   2. Open XQuartz, and then go XQuartz -> Preferences -> Security, and tick the box "Allow connections from network clients"
   3. Run `xhost + 127.0.0.1` which will whitelist your local IP
   4. Finally, you can run the container with the following:
   ```
-  docker run --rm --init -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 jamierajewski/rat-container
+  docker run --rm --init -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 snoplus/rat-container
   ```
 
 ***
@@ -180,7 +186,7 @@ singularity shell -B path/to/rat:/rat rat-container.sif
 ```
 For *Docker*:
 ```
-docker run -ti --init -v "$(pwd)"/rat:/rat jamierajewski/rat-container
+docker run -ti --init -v "$(pwd)"/rat:/rat snoplus/rat-container
 ```
 - Navigate to the RAT directory:
 ```
@@ -202,7 +208,7 @@ singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
 ```
 For *Docker*:
 ```
-docker run --init --rm -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff jamierajewski/rat-container
+docker run --init --rm -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff snoplus/rat-container
 ```
 - Now in the container, you have access to /other/path at /stuff
 
@@ -232,7 +238,7 @@ where `YOUR_CONTAINER_TAG` is the name you would like to give to your container.
 
 5. This will build your container with your tag name, which you can then use in the same way as in the above guide, but instead of
 ```
-docker run ... jamierajewski/rat-container
+docker run ... snoplus/rat-container
 ```
 you will now run:
 ```
@@ -243,8 +249,8 @@ docker run ... YOUR_TAG_NAME
 
 ***
 # To run multiple RAT instances
-If you want to use multiple RAT instances simultaneously, then all you have to do is run an instance of this container 
-with each version of RAT that you want; do NOT try mounting multiple RATs to the SAME instance as the image was 
+If you want to use multiple RAT instances simultaneously, then all you have to do is run an instance of this container
+with each version of RAT that you want; do NOT try mounting multiple RATs to the SAME instance as the image was
 not configured for this.
 
 ***
@@ -261,27 +267,27 @@ rebuild the container.
 /tmp
 /private
 /Volumes
-```  
-- Ensure your RAT repository is stored in one of these locations (the easiest would be simply under /Users/[your username]/rat)
+```
+- Ensure your RAT repository is stored in one of these locations (the easiest would be simply under `/Users/[your username]/rat`)
 
 **I'm seeing "/usr/bin/bash: /usr/bin/bash: cannot execute binary file" when I try to run the container**
 - This happens because you have `bash` at the end of your run command; in the new version, this is no longer necessary as it
 will launch bash by itself.
 
 **I'm seeing "Error getting image manifest using url..." when I try to pull the container**
-- This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine, 
+- This seems to happen on the clusters, most likely due to the firewall. Try pulling the container on your local machine,
 and transfer the image to your cluster with scp.
 
 **I'm seeing errors when running scons to rebuild RAT after updating to a new RAT release**
-- This happens when you use the GUI-enabled docker command (not the standard command) when launching the container to rebuild 
+- This happens when you use the GUI-enabled docker command (not the standard command) when launching the container to rebuild
 RAT. Please review the instructions for how to update RAT above for the correct way to update.
-- This can also happen if you don't run scons within the /rat directory as it won't be able to find the correct files
+- This can also happen if you don't run `scons` within the `/rat` directory as it won't be able to find the correct files
 
 **When I try to open the TBrowser/another GUI app, it doesn't show**
 - This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
 does not have access to the display by default so there is some configuration required.
 
-The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing. 
-Because you are remotely connected, the display is not configured by default to also connect. 
+The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing.
+Because you are remotely connected, the display is not configured by default to also connect.
 
 Known methods for getting a GUI working are listed in a section above for each OS under Docker.
