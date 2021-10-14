@@ -87,27 +87,30 @@ This difference doesn't have an effect on how the container is actually used.
 - Enter the following command, filling in the path to RAT with your own.
   This will mount your RAT repo to the directory `/rat` inside the container:
 
-For *Singularity*:
-```
-singularity shell -B path/to/rat:/rat rat-container.sif
-```
-For *Docker*:
-```
-docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
-```
-*Note* - the `-v` flag operates the same as `-B` in Singularity BUT you **must** provide it with an absolute path (one starting at /); relative paths (the path from where you are now) will **not** work.
+  For *Singularity*:
+  ```
+  singularity shell -B path/to/rat:/rat rat-container.sif
+  ```
+  For *Docker*:
+  ```
+  docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
+  ```
+  *Note* - the `-v` flag operates the same as `-B` in Singularity BUT you **must** provide it with an absolute path (one starting at /);
+  relative paths (the path from where you are now) will **not** work.
 
 - Once in the container, Singularity users need to run the following:
-```
-source /home/scripts/setup-env.sh
-```
-In **Docker** this is **unnecessary** as Docker sources it automatically on launch. You may see a message about how it could not find `/rat/env.sh`; this is expected as you have not built RAT yet. If the build is successful, you shouldn't see this message next time.
+  ```
+  source /home/scripts/setup-env.sh
+  ```
+  In **Docker** this is **unnecessary** as Docker sources it automatically on launch.
+  You may see a message about how it could not find `/rat/env.sh`; this is expected as you have not built RAT yet.
+  If the build is successful, you shouldn't see this message next time.
 
-- Finally, run this command to build RAT:
-```
-source /home/scripts/build-rat.sh
-```
-Alternatively, `scons` can manually be called while in the `/rat` folder.
+  - Finally, run this command to build RAT:
+  ```
+  source /home/scripts/build-rat.sh
+  ```
+  Alternatively, `scons` can manually be called while in the `/rat` folder.
 
 - RAT is now ready to use! Look at the instructions below for how to run it
 
@@ -123,15 +126,15 @@ exit
 - First, get a shell into the container with your RAT bound into it:
 (It is **important** to **mount your rat directory to /rat** as the build scripts look there for it!)
 
-For *Singularity*:
-```
-singularity shell -B path/to/rat:/rat rat-container.sif
-```
-For *Docker*:
-```
-docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
-```
-- RAT is now ready for use, and you should be able to access the RAT repo itself at /rat. To use other
+  For *Singularity*:
+  ```
+  singularity shell -B path/to/rat:/rat rat-container.sif
+  ```
+  For *Docker*:
+  ```
+  docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
+  ```
+- RAT is now ready for use, and you should be able to access the RAT repo itself at `/rat`. To use other
 directories, additional bind mounts are necessary (see below).
 
 ***
@@ -175,41 +178,41 @@ directories, additional bind mounts are necessary (see below).
 **To update RAT**:
 
 - Outside of the container, `cd` into your RAT repo, and run:
-```
-git pull origin master
-```
+  ```
+  git pull origin master
+  ```
 - Then, run the container:
 
-For *Singularity*:
-```
-singularity shell -B path/to/rat:/rat rat-container.sif
-```
-For *Docker*:
-```
-docker run -ti --init -v "$(pwd)"/rat:/rat snoplus/rat-container
-```
+  For *Singularity*:
+  ```
+  singularity shell -B path/to/rat:/rat rat-container.sif
+  ```
+  For *Docker*:
+  ```
+  docker run -ti --init -v "$(pwd)"/rat:/rat snoplus/rat-container
+  ```
 - Navigate to the RAT directory:
-```
-cd /rat
-```
-- Finally, run scons to rebuild RAT:
-```
-scons
-```
+  ```
+  cd /rat
+  ```
+- Finally, run the build script (`/home/scripts/build-rat.sh`) or `scons` directly to rebuild RAT:
+  ```
+  scons
+  ```
 
 ***
 **To write/execute files from directories outside of RAT/launch directory**:
 - Add additional bind mounts to your Singularity or Docker command
 - Example:
 
-For *Singularity*:
-```
-singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
-```
-For *Docker*:
-```
-docker run --init --rm -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff snoplus/rat-container
-```
+  For *Singularity*:
+  ```
+  singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
+  ```
+  For *Docker*:
+  ```
+  docker run --init --rm -ti -v /absolute/path/to/rat:/rat -v /other/path:/stuff snoplus/rat-container
+  ```
 - Now in the container, you have access to /other/path at /stuff
 
 ***
@@ -231,19 +234,19 @@ To rebuild the container:
 2. Navigate into either `/ROOT5` or `/ROOT6` depending on which you would like to build off of
 3. Edit `Dockerfile`, which is the recipe on what you would like to put into your container
 4. Once you are happy with your changes, navigate back to the root of the repository and run:
-```
-docker build -t YOUR_CONTAINER_TAG -f ROOT5/Dockerfile .
-```
-where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `ROOT5` to `ROOT6` if using that version
+   ```
+   docker build -t YOUR_CONTAINER_TAG -f ROOT5/Dockerfile .
+   ```
+   where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `ROOT5` to `ROOT6` if using that version
 
 5. This will build your container with your tag name, which you can then use in the same way as in the above guide, but instead of
-```
-docker run ... snoplus/rat-container
-```
-you will now run:
-```
-docker run ... YOUR_TAG_NAME
-```
+   ```
+   docker run ... snoplus/rat-container
+   ```
+   you will now run:
+   ```
+   docker run ... YOUR_TAG_NAME
+   ```
 
 6. [OPTIONAL] If you would like to share or back up your container image, you can push it to Dockerhub. You can follow [the official documentation](https://docs.docker.com/docker-hub/repos/#pushing-a-docker-container-image-to-docker-hub) to learn how
 
@@ -262,12 +265,12 @@ rebuild the container.
 
 **On macOS I see "docker: Error response from daemon: Mounts denied: The path ... is not shared from OS X and is not known to Docker."**
 - This happens because Docker only allows mounting from 4 locations by default to follow Apple's sandbox guidelines; these locations are:
-```
-/Users
-/tmp
-/private
-/Volumes
-```
+  ```
+  /Users
+  /tmp
+  /private
+  /Volumes
+  ```
 - Ensure your RAT repository is stored in one of these locations (the easiest would be simply under `/Users/[your username]/rat`)
 
 **I'm seeing "/usr/bin/bash: /usr/bin/bash: cannot execute binary file" when I try to run the container**
@@ -286,8 +289,6 @@ RAT. Please review the instructions for how to update RAT above for the correct 
 **When I try to open the TBrowser/another GUI app, it doesn't show**
 - This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
 does not have access to the display by default so there is some configuration required.
-
-The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing.
+- The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing.
 Because you are remotely connected, the display is not configured by default to also connect.
-
-Known methods for getting a GUI working are listed in a section above for each OS under Docker.
+- Known methods for getting a GUI working are listed in a section above for each OS under Docker.
