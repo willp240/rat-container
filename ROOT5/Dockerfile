@@ -17,7 +17,7 @@ RUN mkdir -p $SOFTWAREDIR
 # Install all tools, compilers, libraries, languages, and general pre-requisites
 # for the SNO+ tools
 RUN yum group install -y "Development Tools"
-RUN yum install -y vim emacs valgrind gdb which wget git tar \
+RUN yum install -y vim emacs valgrind gdb which wget git tar cron \
     uuid-devel fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel openssl \
     libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel \
     libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html postgresql-devel \
