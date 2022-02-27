@@ -14,20 +14,22 @@ COPY scripts/docker-entrypoint.sh /usr/local/bin/
 ARG SOFTWAREDIR=/home/software
 RUN mkdir -p $SOFTWAREDIR
 
-# Install all tools, compilers, libraries, languages, and general pre-requisites
-# for the SNO+ tools
+# Install all tools, compilers, libraries, languages,
+# and general pre-requisites for the SNO+ tools.
+# Also do not skip missing packages to better catch errors.
+RUN yum install -y yum-utils
+RUN yum-config-manager --save --setopt=skip_missing_names_on_install=False
 RUN yum group install -y "Development Tools"
-RUN yum install --setopt=skip_missing_names_on_install=False -y \
+RUN yum install -y \
     vim emacs valgrind gdb which wget git tar crontabs \
     uuid-devel fftw fftw-devel gsl gsl-devel curl curl-devel bzip2 bzip2-devel openssl \
     libX11-devel libXpm-devel libXft-devel libXext-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel \
     libXmu-devel libXi-devel expat-devel make nano wget rsync strace cmake latex2html postgresql-devel \
-    scl-utils scl-utils-build yum-conf-repos
-RUN yum install --setopt=skip_missing_names_on_install=False -y yum-conf-softwarecollections
+    scl-utils scl-utils-build yum-conf-repos yum-conf-softwarecollections
 RUN yum update -y
 
 # Install Python packages
-RUN yum install --setopt=skip_missing_names_on_install=False -y python27
+RUN yum install -y python27
 RUN source /opt/rh/python27/enable && \
     python2 -m pip install --upgrade --no-cache-dir pip==20.3.4 && \
     python2 -m pip install --upgrade --no-cache-dir setuptools && \
