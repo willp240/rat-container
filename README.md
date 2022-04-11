@@ -171,8 +171,9 @@ directories, additional bind mounts are necessary (see below).
   3. Run `xhost + 127.0.0.1` which will whitelist your local IP
   4. Finally, you can run the container with the following:
   ```
-  docker run --rm --init -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 snoplus/rat-container
+  docker run --rm --init -ti -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 snoplus/rat-container
   ```
+  (The order `-ti` instead of `-it` seems to only matter for MacOS)
 
 ***
 **To update RAT**:
