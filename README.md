@@ -173,6 +173,7 @@ directories, additional bind mounts are necessary (see below).
   ```
   docker run --rm --init -ti -v /tmp/.X11-unix:/tmp/.X11-unix -v /absolute/path/to/rat:/rat -e DISPLAY=host.docker.internal:0 snoplus/rat-container
   ```
+  (The order `-ti` instead of `-it` seems to only matter for MacOS)
 
 ***
 **To update RAT**:
