@@ -16,8 +16,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ARG SOFTWAREDIR=/home/software
 RUN mkdir -p /home/software
 
-RUN apt-get update && apt-get install -y gcc g++ gfortran libssl-dev libpcre3-dev \
-    xlibmesa-glu-dev libglew1.5-dev libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev \
+RUN apt-get update && apt-get install -y gcc g++ gfortran \
+    libssl-dev libpcre3-dev xlibmesa-glu-dev libglew1.5-dev \
+    libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev \
     graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev libxml2-dev libkrb5-dev \
     libgsl0-dev emacs wget git tar curl nano vim rsync strace valgrind make cmake \
     libxpm-dev libxft-dev libxext-dev libcurl4-openssl-dev libbz2-dev latex2html \
@@ -25,17 +26,14 @@ RUN apt-get update && apt-get install -y gcc g++ gfortran libssl-dev libpcre3-de
 
 # Install Python packages
 RUN python3 -m pip install --upgrade --no-cache-dir pip && \
-    python3 -m pip install --no-cache-dir ipython numpy scipy matplotlib
+    python3 -m pip install --upgrade --no-cache-dir setuptools && \
+    python3 -m pip install --no-cache-dir pipx && \
+    python3 -m pip install --no-cache-dir requests pytz python-dateutil \
+    ipython numpy scipy matplotlib
 
-# Fetch and install SCons
+# Install SCons via pip (quicker and simpler than from source)
 ARG SCONS_VERSION=3.1.2
-WORKDIR $SOFTWAREDIR
-RUN wget https://downloads.sourceforge.net/project/scons/scons/$SCONS_VERSION/scons-$SCONS_VERSION.tar.gz && \
-    tar zxvf scons-$SCONS_VERSION.tar.gz && \
-    cd scons-$SCONS_VERSION && \
-    python2 setup.py install && \
-    cd .. && \
-    rm -rf scons-$SCONS_VERSION.tar.gz && rm -rf scons-$SCONS_VERSION
+RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install scons==$SCONS_VERSION
 
 # Fetch and install TensorFlow C API v1.15.0 and cppflow
 WORKDIR $SOFTWAREDIR
