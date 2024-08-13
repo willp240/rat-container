@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-LABEL maintainer="Mark Anderson <anderson.mark@queensu.ca>"
+LABEL maintainer="Will Parker <william.parker@physics.ox.ac.uk>"
 
 # Switch default shell to bash
 SHELL ["/bin/bash", "-c"]
