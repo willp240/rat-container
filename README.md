@@ -3,7 +3,7 @@
 [![https://img.shields.io/badge/hosted-dockerhub-blue](https://img.shields.io/badge/hosted-dockerhub-blue)](https://hub.docker.com/r/snoplus/rat-container)
 
 
-Singularity and Docker recipes to build a SNO+ environment for RAT.
+Apptainer (formerly Singularity) and Docker recipes to build a SNO+ environment for RAT.
 
 For regular usage, simply download the pre-built container with the following instructions for your container platform of choice. For advanced users, see the build instructions below.
 
@@ -19,7 +19,7 @@ As of ***November 1, 2020*** Docker is implementing an inactive image removal po
 - Can build any version of RAT
 - GUI output support on all operating systems
 - TensorFlow and CppFlow (CPU-only for the time being)
-- Singularity and Docker compatibility
+- Apptainer and Docker compatibility
 - *Cluster-compatible
 
 *The image can be uploaded manually, pulled directly (if the cluster firewall permits) or run from /cvmfs; however, the cvmfs
@@ -27,19 +27,18 @@ image is not always up-to-date with the repo version. This has been [identified 
 
 # [PLEASE READ]
 
-1. Singularity and Docker are similar tools but operate slightly differently. Singularity acts more like an overlay, where
+1. Apptainer and Docker are similar tools but operate slightly differently. Apptainer acts more like an overlay, where
 you have access to your filesystem as you would **outside** the container (with the same rights as you'd have outside),
 whereas Docker provides you with an isolated virtual filesystem (meaning you **can't** access your files from outside
 the container). In summary, it is best to **mount** whatever directories you may need when running the container, whether
-in Docker or Singularity (see the section "**To write/execute files from directories outside of RAT/launch
+in Docker or Apptainer (see the section "**To write/execute files from directories outside of RAT/launch
 directory**" below).
 
 2. Regardless of whether you download or build the container, you can use and develop RAT as you see fit as it is external
 to the container.
 
-3. Instructions to install Singularity can be found [here.](https://github.com/sylabs/singularity/blob/master/INSTALL.md) For
+3. Instructions to install Apptainer can be found [here.](https://github.com/apptainer/apptainer/blob/v1.0.0-rc.1/INSTALL.md) For
 Docker, instructions for each platform can be found [here.](https://docs.docker.com/install/#supported-platforms)
-- **For Singularity, version 3.2+ is required**
 - **For Docker, version 19.0+ is required**
 
 4. As the DIRAC system no longer supports SL6, there is no longer a need to maintain an SL6 version when pushing new RAT releases to cvmfs. Therefore, the only image offered here is based on SL7.
@@ -51,28 +50,26 @@ instructions below.**
 - [Available here (Requires SNO+ DocDB access)](https://www.snolab.ca/snoplus/private/DocDB/0062/006281/001/RAT%20container%20tutorial.mp4)
 
 # To download the pre-built container
-**If on a shared system/cluster**, Singularity should be available so use the following command to obtain the latest
+**If on a shared system/cluster**, Apptainer should be available so use the following command to obtain the latest
 version of the container:
 ```
-singularity pull --name rat-container.sif docker://snoplus/rat-container:root5
+apptainer pull --name rat-container.sif docker://snoplus/rat-container:el9
 ```
-The tag (in the above command, `root5`) can be replaced with the desired tag.
-
-Ensure that the Singularity version you are using is **&ge;3.2**
+The tag (in the above command, `el9`) can be replaced with the desired tag.
 
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. There is a version of
-the image located at `/cvmfs/snoplus.egi.eu/sl7/sw/containers/rat-container.sif` but keep in mind that it may not always be
+the image located at `/cvmfs/snoplus.egi.eu/el9/sw/containers/rat-container.sif` but keep in mind that it may not always be
 the latest version (this shouldn't matter if you are simply building/running RAT).
 
 ***
 **If on your own local machine**, Docker should be used as it is easier to install.
 The command to obtain the latest version of the container for Docker is:
 ```
-docker pull snoplus/rat-container:root5
+docker pull snoplus/rat-container:el9
 ```
-The tag (in the above command, `root5`) can be replaced with the desired tag.
+The tag (in the above command, `el9`) can be replaced with the desired tag.
 
-Docker doesn't actually create a file in your working directory in the same way that Singularity does; rather, it
+Docker doesn't actually create a file in your working directory in the same way that Apptainer does; rather, it
 downloads the image layers and adds an entry to your local **Docker registry** which can be viewed by going:
 ```
 docker images
@@ -87,18 +84,18 @@ This difference doesn't have an effect on how the container is actually used.
 - Enter the following command, filling in the path to RAT with your own.
   This will mount your RAT repo to the directory `/rat` inside the container:
 
-  For *Singularity*:
+  For *Apptainer*:
   ```
-  singularity shell -B path/to/rat:/rat rat-container.sif
+  apptainer shell -B path/to/rat:/rat rat-container.sif
   ```
   For *Docker*:
   ```
   docker run -ti --init --rm -v /absolute/path/to/rat:/rat snoplus/rat-container
   ```
-  *Note* - the `-v` flag operates the same as `-B` in Singularity BUT you **must** provide it with an absolute path (one starting at /);
+  *Note* - the `-v` flag operates the same as `-B` in Apptainer BUT you **must** provide it with an absolute path (one starting at /);
   relative paths (the path from where you are now) will **not** work.
 
-- Once in the container, Singularity users need to run the following:
+- Once in the container, Apptainer users need to run the following:
   ```
   source /home/scripts/setup-env.sh
   ```
@@ -115,7 +112,7 @@ This difference doesn't have an effect on how the container is actually used.
 - RAT is now ready to use! Look at the instructions below for how to run it
 
 ***
-**To exit the container (Singularity and Docker)**:
+**To exit the container (Apptainer and Docker)**:
 ```
 exit
 ```
@@ -126,9 +123,9 @@ exit
 - First, get a shell into the container with your RAT bound into it:
 (It is **important** to **mount your rat directory to /rat** as the build scripts look there for it!)
 
-  For *Singularity*:
+  For *Apptainer*:
   ```
-  singularity shell -B path/to/rat:/rat rat-container.sif
+  apptainer shell -B path/to/rat:/rat rat-container.sif
   ```
   For *Docker*:
   ```
@@ -142,7 +139,7 @@ directories, additional bind mounts are necessary (see below).
 (This is based on CERN's documentation for [running ROOT with graphics](https://hub.docker.com/r/rootproject/root-ubuntu16/))
 
 - The process is different on each OS but I will outline steps here to make it work on each. Note that these instructions
-  assume that since you are on your own machine, you are using **Docker**. Singularity may work with graphics as it is, but
+  assume that since you are on your own machine, you are using **Docker**. Apptainer may work with graphics as it is, but
   these Docker solutions are the only ones that are tested and confirmed to be working.
 
   For **Linux**:
@@ -184,9 +181,9 @@ directories, additional bind mounts are necessary (see below).
   ```
 - Then, run the container:
 
-  For *Singularity*:
+  For *Apptainer*:
   ```
-  singularity shell -B path/to/rat:/rat rat-container.sif
+  apptainer shell -B path/to/rat:/rat rat-container.sif
   ```
   For *Docker*:
   ```
@@ -203,12 +200,12 @@ directories, additional bind mounts are necessary (see below).
 
 ***
 **To write/execute files from directories outside of RAT/launch directory**:
-- Add additional bind mounts to your Singularity or Docker command
+- Add additional bind mounts to your Apptainer or Docker command
 - Example:
 
-  For *Singularity*:
+  For *Apptainer*:
   ```
-  singularity shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
+  apptainer shell -B path/to/rat:/rat,/other/path:/stuff rat-container.sif
   ```
   For *Docker*:
   ```
@@ -232,13 +229,13 @@ To build, you must have **root permissions** and **Docker installed on your mach
 To rebuild the container:
 
 1. Clone this repository
-2. Navigate into either `/ROOT5` or `/ROOT6` depending on which you would like to build off of
+2. Navigate into either `EL9`, `/ROOT5` or `/ROOT6` depending on which tag you would like to build off of
 3. Edit `Dockerfile`, which is the recipe on what you would like to put into your container
 4. Once you are happy with your changes, navigate back to the root of the repository and run:
    ```
-   docker build -t YOUR_CONTAINER_TAG -f ROOT5/Dockerfile .
+   docker build -t YOUR_CONTAINER_TAG -f EL9/Dockerfile .
    ```
-   where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `ROOT5` to `ROOT6` if using that version
+   where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `EL9` to whichever version you wat
 
 5. This will build your container with your tag name, which you can then use in the same way as in the above guide, but instead of
    ```
@@ -290,6 +287,6 @@ RAT. Please review the instructions for how to update RAT above for the correct 
 **When I try to open the TBrowser/another GUI app, it doesn't show**
 - This is a known issue, and happens for two reasons. If you are trying to use the Docker version on your own machine, Docker
 does not have access to the display by default so there is some configuration required.
-- The other issue is if you are trying to do this on a cluster with the Singularity version, you will notice the same thing.
+- The other issue is if you are trying to do this on a cluster with the Apptainer version, you will notice the same thing.
 Because you are remotely connected, the display is not configured by default to also connect.
 - Known methods for getting a GUI working are listed in a section above for each OS under Docker.

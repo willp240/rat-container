@@ -1,11 +1,6 @@
 #!/bin/bash
 
-SL_PYTHON27=/opt/rh/python27/enable
-if [ -f "$SL_PYTHON27" ]; then
-   source $SL_PYTHON27
-fi
-
-source /home/software/root/bin/thisroot.sh
+source /home/software/root-build/bin/thisroot.sh
 source /home/software/geant4.10.00.p04/bin/geant4.sh
 
 # export TF_DIR=/usr/local
