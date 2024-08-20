@@ -41,21 +41,24 @@ to the container.
 Docker, instructions for each platform can be found [here.](https://docs.docker.com/install/#supported-platforms)
 - **For Docker, version 19.0+ is required**
 
-4. As the DIRAC system no longer supports SL6, there is no longer a need to maintain an SL6 version when pushing new RAT releases to cvmfs. Therefore, the only image offered here is based on SL7.
-
-5. **To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
+4. **To be clear, if you wish to use the prebuilt image, then you do NOT need to clone this repo; simply follow the
 instructions below.**
 
-# New Video Tutorial (slightly outdated - no longer necessary to source the setup-env.sh on startup)
+5. On Cedar, when using apptainer, first do:
+```
+module load apptainer
+```
+
+# New Video Tutorial (slightly outdated - no longer necessary to source the setup-env.sh on startup, and we no longer have separate ROOT5/6 tags, just MAIN)
 - [Available here (Requires SNO+ DocDB access)](https://www.snolab.ca/snoplus/private/DocDB/0062/006281/001/RAT%20container%20tutorial.mp4)
 
 # To download the pre-built container
 **If on a shared system/cluster**, Apptainer should be available so use the following command to obtain the latest
 version of the container:
 ```
-apptainer pull --name rat-container.sif docker://snoplus/rat-container:el9
+apptainer pull --name rat-container.sif docker://snoplus/rat-container:main
 ```
-The tag (in the above command, `el9`) can be replaced with the desired tag.
+The tag (in the above command, `main`) could be replaced with the desired tag (although currently, only MAIN is maintained).
 
 At the moment, certain clusters (like Cedar) have firewall rules preventing access to SingularityHub. There is a version of
 the image located at `/cvmfs/snoplus.egi.eu/el9/sw/containers/rat-container.sif` but keep in mind that it may not always be
@@ -65,9 +68,9 @@ the latest version (this shouldn't matter if you are simply building/running RAT
 **If on your own local machine**, Docker should be used as it is easier to install.
 The command to obtain the latest version of the container for Docker is:
 ```
-docker pull snoplus/rat-container:el9
+docker pull snoplus/rat-container:main
 ```
-The tag (in the above command, `el9`) can be replaced with the desired tag.
+The tag (in the above command, `main`) can be replaced with the desired tag.
 
 Docker doesn't actually create a file in your working directory in the same way that Apptainer does; rather, it
 downloads the image layers and adds an entry to your local **Docker registry** which can be viewed by going:
@@ -229,13 +232,13 @@ To build, you must have **root permissions** and **Docker installed on your mach
 To rebuild the container:
 
 1. Clone this repository
-2. Navigate into either `EL9`, `/ROOT5` or `/ROOT6` depending on which tag you would like to build off of
+2. Navigate into `MAIN`
 3. Edit `Dockerfile`, which is the recipe on what you would like to put into your container
 4. Once you are happy with your changes, navigate back to the root of the repository and run:
    ```
-   docker build -t YOUR_CONTAINER_TAG -f EL9/Dockerfile .
+   docker build -t YOUR_CONTAINER_TAG -f MAIN/Dockerfile .
    ```
-   where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `EL9` to whichever version you wat
+   where `YOUR_CONTAINER_TAG` is the name you would like to give to your container. Also, ensure you change `MAIN` to whichever version you want
 
 5. This will build your container with your tag name, which you can then use in the same way as in the above guide, but instead of
    ```
