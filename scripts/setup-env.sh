@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source /home/software/root-build/bin/thisroot.sh
+cd /home/software/root-build/bin/
+source thisroot.sh
+cd /home
 source /home/software/geant4.10.00.p04/bin/geant4.sh
 
 # export TF_DIR=/usr/local
