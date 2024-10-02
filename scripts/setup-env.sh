@@ -1,10 +1,11 @@
 #!/bin/bash
 
-cd /home/software/root-build/bin/
+pushd /home/software/root-build/bin/
 source thisroot.sh
-cd /home
+popd
 source /home/software/geant4.10.00.p04/bin/geant4.sh
 
+source /home/scripts/setup-genie.sh
 # export TF_DIR=/usr/local
 # export CPPFLOW_DIR=/home/software/cppflow
 # export LIBRARY_PATH=$LIBRARY_PATH:$TF_DIR/lib
