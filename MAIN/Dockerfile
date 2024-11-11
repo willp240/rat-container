@@ -18,7 +18,7 @@ RUN mkdir -p /home/software
 
 RUN apt-get update && apt-get install -y gcc g++ gfortran \
     libssl-dev libpcre3-dev xlibmesa-glu-dev libglew1.5-dev \
-    libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev \
+    libftgl-dev libmysqlclient-dev libfftw3-dev libcfitsio-dev cppcheck \
     graphviz-dev libavahi-compat-libdnssd-dev libldap2-dev libxml2-dev libkrb5-dev \
     libgsl0-dev emacs wget git tar curl nano vim rsync strace valgrind make cmake \
     libxpm-dev libxft-dev libxext-dev libcurl4-openssl-dev libbz2-dev latex2html \
@@ -29,7 +29,7 @@ RUN python3 -m pip install --upgrade --no-cache-dir pip && \
     python3 -m pip install --upgrade --no-cache-dir setuptools && \
     python3 -m pip install --no-cache-dir pipx && \
     python3 -m pip install --no-cache-dir requests pytz python-dateutil \
-    ipython numpy scipy matplotlib
+    ipython numpy scipy matplotlib pylint
 
 # Install SCons via pip (quicker and simpler than from source)
 ARG SCONS_VERSION=3.1.2
