@@ -54,7 +54,7 @@ module load apptainer
 
 # To download the pre-built container
 **If on a shared system/cluster**, Apptainer should be available so use the following command to obtain the latest
-version of the container:
+version of the container (for some older versions of Apptainer, you may need to use the command 'singularity', rather than 'apptainer'):
 ```
 apptainer pull --name rat-container.sif docker://snoplus/rat-container:main
 ```
